@@ -20,7 +20,7 @@ jobs:
   validation:
     strategy:
       matrix:
-        folder: ["add", "folders", "here"]
+        folder: ["./infrastructure/modules", "./infrastructure/example-account"]
     name: Terraform validate for ${{ matrix.folder }}
     runs-on: ubuntu-20.04
     steps:
@@ -41,7 +41,7 @@ jobs:
   linting:
     strategy:
       matrix:
-        folder: ["add", "folders", "here"]
+        folder: ["./infrastructure/modules", "./infrastructure/example-account"]
     name: Terraform lint for ${{ matrix.folder }}
     runs-on: ubuntu-20.04
     steps:
@@ -59,7 +59,7 @@ jobs:
   plan:
     strategy:
       matrix:
-        folder: ["add", "folders", "here"]
+        folder: ["./infrastructure/example-account"]
     name: Terraform plan for ${{ matrix.folder }}
     runs-on: ubuntu-20.04
     needs: [validation, linting]
