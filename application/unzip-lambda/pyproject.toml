@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "unzip_lambda"
+version = "1.0.0"
+description = 'Simple lambda to unzip known viewings of dogs from raw to processed bucket.'
+license = "BSD-3"
+authors = [
+    "Ben Clark <bclark@sudoblark.com>"
+]
+repository  = 'https://github.com/sudoblark/sudoblark.terraform.modularised-demo'
+classifiers = [
+    "Topic :: AWS Lambda :: Python Data Scripts"
+]
+
+[tool.poetry.dependencies]
+python = "~3.12" # Any patch version of 3.12
+boto3 = { version = '1.28.63' }
+pyzipper = { version = '0.3.6' }
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.flake8]
+ignore = ["E203", "E266", "W503"]
+max-line-length = 88
+select = ["B", "C", "E", "F", "W", "T4", "B9"]
+exclude = [
+    ".git", "__pycache__", "old", "build", "dist", "database", "junit", "env", "_venv",
+]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+omit = [
+    "**/__init__.py",
+]

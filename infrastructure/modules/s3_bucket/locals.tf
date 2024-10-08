@@ -30,19 +30,25 @@ locals {
     },
     {
       name : "raw",
-      log_bucket : local.known_s3_buckets["logging"],
+      log_bucket : local.known_s3_buckets.logging,
       versioning : true,
-      enable_kms : true
+      enable_kms : true,
+      prefixes = [
+        "dogs/landing"
+      ]
     },
     {
       name : "processed",
-      log_bucket : local.known_s3_buckets["logging"],
+      log_bucket : local.known_s3_buckets.logging,
       versioning : true,
-      enable_kms : true
+      enable_kms : true,
+      prefixes = [
+        "dogs/daily"
+      ]
     },
     {
       name : "lambda-assets",
-      log_bucket : local.known_s3_buckets["logging"],
+      log_bucket : local.known_s3_buckets.logging
       versioning : true
     }
   ]

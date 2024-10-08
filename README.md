@@ -40,6 +40,7 @@
       <a href="#usage">Usage</a>
       <ul>
         <li><a href="#deploying-terraform">Deploying Terraform</a></li>
+        <li><a href="#processing-dummy-files">Processing dummy files</a></li>
       </ul>
     </li>
   </ol>
@@ -178,6 +179,15 @@ so you'll need to use a GITHUB_TOKEN to download these modules:
 export GITHUB_TOKEN=<TOKEN>
 ```
 
+4. ZIP the lambda (Note in a production environment this would usually be done via CI/CD)
+
+```sh
+cd application/unzip-lambda/unzip_lambda
+zip -r lambda.zip lambda_function.py
+mkdir src
+mv lambda.zip src
+```
+
 4. Init, plan and then apply.
 
 ```sh
@@ -191,5 +201,39 @@ terraform apply
 ```sh
 terraform destroy
 ```
+
+### Processing dummy files
+Files under `application/dummy_uploads` contain the contents of the ZIP file our unzip lambda
+unzips from the `raw` to `processed` bucket.
+
+Files names are in the format: `YYYYmmdd.csv` Each file corresponds to dogs viewed that day, with rows
+being in the format of:
+
+```
+dog_name, breed, location
+```
+For example, we may have a file named 20241008.csv with a single row:
+
+```
+Cerberus, Molossus, Hades
+```
+
+Thus indicating that on the 08th October 2024, we spotted Cerberus doing a valiant job guarding the gates to Hates.
+
+To upload these dummy files after the solution has been deployed in to AWS:
+
+1. First ZIP the files:
+
+```sh
+cd application/dummy_uploads
+zip -r uploads.zip .
+```
+
+2. Then, upload the ZIP to the `dev-raw` bucket at the `dogs/landing` prefix.
+3. This should then trigger an s3 bucket notification to run the lambda:
+
+4. This lambda, in turn, should unzip the files and re-upload them into the `dev-processed` bucket,
+at the `dogs/daily` root with prefix determined by date. i.e. for 20241008.csv we'd expect
+an upload at `dogs/daily/_year=2024/_month=10/_day=08/viewings`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
