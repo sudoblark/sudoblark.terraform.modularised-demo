@@ -15,5 +15,18 @@ OPTIONAL
  */
 
 locals {
-  raw_notifications = {}
+  raw_notifications = {
+    lambda_notifications : [
+      {
+        lambda_arn : data.aws_lambda_function.known_lambdas["unzip"].arn
+        lambda_name : data.aws_lambda_function.known_lambdas["unzip"].function_name
+        events = [
+          "s3:ObjectCreated:*"
+        ]
+        filter_prefix = "dogs/landing/"
+        filter_suffix = ".zip"
+        bucket        = local.known_buckets.raw.name
+      }
+    ]
+  }
 }
