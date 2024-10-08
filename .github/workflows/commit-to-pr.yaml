@@ -22,12 +22,10 @@ jobs:
       matrix:
         folder: [
           "./infrastructure/modules/additional_s3_files",
-          "./infrastructure/modules/event_bridge_rule",
           "./infrastructure/modules/lambda",
           "./infrastructure/modules/s3_bucket",
           "./infrastructure/modules/s3_bucket_notifications",
           "./infrastructure/modules/sns",
-          "./infrastructure/modules/state_machine",
           "./infrastructure/example-account"
         ]
     name: Terraform validate for ${{ matrix.folder }}
@@ -52,12 +50,10 @@ jobs:
       matrix:
         folder: [
           "./infrastructure/modules/additional_s3_files",
-          "./infrastructure/modules/event_bridge_rule",
           "./infrastructure/modules/lambda",
           "./infrastructure/modules/s3_bucket",
           "./infrastructure/modules/s3_bucket_notifications",
           "./infrastructure/modules/sns",
-          "./infrastructure/modules/state_machine",
           "./infrastructure/example-account"
         ]
     name: Terraform lint for ${{ matrix.folder }}
