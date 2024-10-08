@@ -174,6 +174,10 @@ architecture-beta
     unzipLambda:R -- L:processedBucket
 ```
 
+Note: `s3_files` module, as you can see, is not needed for ETL. It is instead included
+as it's one of the simplest data-driven modules you can have. Therefore, it's included
+to be used as a simple, but useful, example in a conference/workshop setting.
+
 ### Workflows
 
 ```mermaid
