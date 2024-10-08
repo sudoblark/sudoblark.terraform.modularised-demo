@@ -18,5 +18,19 @@ OPTIONAL
 */
 
 locals {
-  raw_s3_files = []
+  raw_s3_files = [
+    {
+      name : "config",
+      source_folder : "application/dummy_files/",
+      source_file : "config.json",
+      destination_bucket : local.known_buckets.lambda-assets.name,
+      destination_key : "config/unzip.json",
+      template_input : {
+        sns_topic_arn = data.aws_sns_topic.known_topics["etl-failure"].arn,
+        target_prefix = "dogs/daily",
+        target_bucket = local.known_buckets.processed.name,
+        log_level     = "INFO"
+      }
+    },
+  ]
 }

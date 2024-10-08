@@ -7,7 +7,7 @@ locals {
   ])
 }
 
-module "additional_s3_files" {
+module "s3_files" {
   source       = "github.com/sudoblark/sudoblark.terraform.module.aws.s3_files?ref=1.0.0"
   raw_s3_files = local.actual_raw_s3_files
 
