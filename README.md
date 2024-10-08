@@ -56,6 +56,10 @@ in a micro-repo fashion - i.e. one repo per business-case.
 It's counter may be considered to be [sudoblark.terraform.github](https://github.com/sudoblark/sudoblark.terraform.github)
 , which is an example mono-repo to manage all aspects of a single SaaS product in one place.
 
+For now, the repo is intended to be used in workshops/conferences to demonstrate a data-structure driven approach
+to Terraform - and as such the underlying modules are private, so cannot be initialised by anyone
+outside of Sudoblark.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -87,7 +91,7 @@ The repo structure is relatively simple:
 such that Python apps following their respective best-practices, and we
 have a single source of truth for state machine JSON etc.
 - `infrastructure` contains both:
-  - `example-account` folders, one per account
+  - `example-account` folders, one per account, which instantiate modules
   - `modules` folder to act as a top-level for re-usable Terraform modules
 
 This repo is intended to be used for demonstration purposes when delivering
@@ -112,17 +116,12 @@ unzip awscliv2.zip
 ./aws/install
 ```
 
-* Python 3.10
-```sh
-sudo add-apt-repository ppa:deadsnakes/ppa
-apt-get install python3.10
-apt-get install python3.10-full
-```
+* Virtual environment with pre-commit installed
 
-* Python virtual environment
 ```sh
-/usr/bin/python3 -m venv venv
+python3 -m venv venv
 source venv/bin/activate
+pip install pre-commit
 ```
 
 * Poetry
@@ -174,7 +173,14 @@ cd infrastructure/example-account
 export AWS_DEFAULT_PROFILE=<PROFILE-NAME>
 ```
 
-3. Init, plan and then apply.
+3. For now, access to the Sudoblark GitHub org is required for the underlying modules,
+so you'll need to use a GITHUB_TOKEN to download these modules:
+
+```sh
+export GITHUB_TOKEN=<TOKEN>
+```
+
+4. Init, plan and then apply.
 
 ```sh
 terraform init
