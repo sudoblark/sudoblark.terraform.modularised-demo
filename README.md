@@ -291,9 +291,13 @@ cd application/dummy_uploads
 zip -r uploads.zip .
 ```
 
-2. Then, upload the ZIP to the `dev-raw` bucket at the `dogs/landing` prefix.
-3. This should then trigger an s3 bucket notification to run the lambda:
+2. Then, upload the ZIP to the `dev-raw` bucket at the `dogs/landing/` prefix:
 
+```sh
+aws s3 rm s3://dev-demo-raw/dogs/landing/uploads.zip
+aws s3 cp ./application/dummy_uploads/uploads.zip s3://dev-demo-raw/dogs/landing/
+```
+3. This should then trigger an s3 bucket notification to run the lambda.
 4. This lambda, in turn, should unzip the files and re-upload them into the `dev-processed` bucket,
 at the `dogs/daily` root with prefix determined by date. i.e. for 20241008.csv we'd expect
 an upload at `dogs/daily/_year=2024/_month=10/_day=08/viewings`
