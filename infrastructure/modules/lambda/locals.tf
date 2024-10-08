@@ -46,5 +46,68 @@ OPTIONAL
  */
 
 locals {
-  raw_lambdas = []
+  raw_lambdas = [
+    {
+      name : "unzip"
+      description : "Simple lambda to unzip known viewings of dogs from raw to processed bucket."
+      source_folder : "application/unzip-lambda/unzip_lambda"
+      handler : "lambda_function.lambda_handler"
+      environment_variables : {
+        ERROR_SNS_TOPIC = data.aws_sns_topic.known_topics["etl-failure"].arn,
+        TARGET_PREFIX   = "dogs/daily",
+        TARGET_BUCKET   = local.known_buckets.processed.name,
+        LOG_LEVEL       = "INFO"
+      }
+      iam_policy_statements : [
+        {
+          sid : "ListS3Buckets"
+          actions = [
+            "s3:ListBucket"
+          ]
+          resources = [
+            local.known_buckets.raw.arn,
+            local.known_buckets.processed.arn,
+          ]
+        },
+        {
+          sid : "GetS3Objects"
+          actions = [
+            "s3:GetObject"
+          ]
+          resources = [
+            "${local.known_buckets.raw.arn}/*"
+          ]
+        },
+        {
+          sid : "PutS3Objects"
+          actions = [
+            "s3:PutObject"
+          ]
+          resources = [
+            "${local.known_buckets.processed.arn}/*"
+          ]
+        },
+        {
+          sid : "AllowKMSDecryptForS3"
+          actions = [
+            "kms:Decrypt",
+            "kms:GenerateDataKey"
+          ]
+          resources = [
+            data.aws_kms_key.known_keys["raw"].arn,
+            data.aws_kms_key.known_keys["processed"].arn
+          ]
+        },
+        {
+          sid : "AllowPublishToSNS"
+          actions = [
+            "sns:Publish"
+          ]
+          resources = [
+            data.aws_sns_topic.known_topics["etl-failure"].arn
+          ]
+        }
+      ]
+    }
+  ]
 }
