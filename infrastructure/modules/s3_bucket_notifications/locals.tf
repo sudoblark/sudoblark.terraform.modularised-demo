@@ -24,7 +24,7 @@ locals {
           "s3:ObjectCreated:*"
         ]
         filter_prefix = "dogs/landing/"
-        filter_suffix = ".csv"
+        filter_suffix = ".zip"
         bucket        = local.known_buckets.raw.name
       }
     ]
