@@ -20,7 +20,16 @@ jobs:
   validation:
     strategy:
       matrix:
-        folder: ["./infrastructure/modules", "./infrastructure/example-account"]
+        folder: [
+          "./infrastructure/modules/additional_s3_files",
+          "./infrastructure/modules/event_bridge_rule",
+          "./infrastructure/modules/lambda",
+          "./infrastructure/modules/s3_bucket",
+          "./infrastructure/modules/s3_bucket_notifications",
+          "./infrastructure/modules/sns",
+          "./infrastructure/modules/state_machine",
+          "./infrastructure/example-account"
+        ]
     name: Terraform validate for ${{ matrix.folder }}
     runs-on: ubuntu-20.04
     steps:
@@ -41,7 +50,16 @@ jobs:
   linting:
     strategy:
       matrix:
-        folder: ["./infrastructure/modules", "./infrastructure/example-account"]
+        folder: [
+          "./infrastructure/modules/additional_s3_files",
+          "./infrastructure/modules/event_bridge_rule",
+          "./infrastructure/modules/lambda",
+          "./infrastructure/modules/s3_bucket",
+          "./infrastructure/modules/s3_bucket_notifications",
+          "./infrastructure/modules/sns",
+          "./infrastructure/modules/state_machine",
+          "./infrastructure/example-account"
+        ]
     name: Terraform lint for ${{ matrix.folder }}
     runs-on: ubuntu-20.04
     steps:
@@ -59,7 +77,9 @@ jobs:
   plan:
     strategy:
       matrix:
-        folder: ["./infrastructure/example-account"]
+        folder: [
+          "./infrastructure/example-account"
+        ]
     name: Terraform plan for ${{ matrix.folder }}
     runs-on: ubuntu-20.04
     needs: [validation, linting]
