@@ -36,5 +36,16 @@ Constraints
  */
 
 locals {
-  raw_sns_topics = []
+  raw_sns_topics = [
+    {
+      suffix = "etl-failure"
+      subscriptions = [
+        {
+          endpoint = "enquires@sudoblark.com",
+          name     = "enquires_alert"
+          protocol = "email"
+        }
+      ]
+    }
+  ]
 }
