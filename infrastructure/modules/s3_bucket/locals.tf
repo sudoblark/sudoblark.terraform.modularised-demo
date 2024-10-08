@@ -26,24 +26,24 @@ OPTIONAL
 locals {
   raw_s3_buckets = [
     {
-      name: "logging"
+      name : "logging"
     },
     {
-      name: "raw",
-      log_bucket: local.known_s3_buckets["logging"],
-      versioning: true,
-      enable_kms: true
+      name : "raw",
+      log_bucket : local.known_s3_buckets["logging"],
+      versioning : true,
+      enable_kms : true
     },
     {
-      name: "processed",
-      log_bucket: local.known_s3_buckets["logging"],
-      versioning: true,
-      enable_kms: true
+      name : "processed",
+      log_bucket : local.known_s3_buckets["logging"],
+      versioning : true,
+      enable_kms : true
     },
     {
-      name: "lambda-assets",
-      log_bucket: local.known_s3_buckets["logging"],
-      versioning: true
+      name : "lambda-assets",
+      log_bucket : local.known_s3_buckets["logging"],
+      versioning : true
     }
   ]
 }
