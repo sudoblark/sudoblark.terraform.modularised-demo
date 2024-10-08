@@ -37,6 +37,14 @@
       </ul>
     </li>
     <li>
+    <li>
+      <a href="#architecture">Architecture</a>
+      <ul>
+        <li><a href="#infrastructure">Infrastructure</a></li>
+        <li><a href="#workflows">Workflows</a></li>
+      </ul>
+    </li>
+    <li>
       <a href="#usage">Usage</a>
       <ul>
         <li><a href="#deploying-terraform">Deploying Terraform</a></li>
@@ -140,6 +148,60 @@ You may run these yourself as follows:
 source venv/bin/activate
 pip install pre-commit
 pre-commit run --all-files
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- ARCHITECTURE -->
+## Architecture
+
+The below sections outline architecture diagrams and explanations in order to better understand just _what_ this
+demo repo both in terms of infrastructure and application workflows.
+
+### Infrastructure
+
+```mermaid
+architecture-beta
+    group demo(cloud)[AWS Account]
+
+    service unzipLambda(server)[Unzip lambda] in demo
+    service rawBucket(database)[raw bucket] in demo
+    service processedBucket(database)[processed bucket] in demo
+    service bucketNotification(disk)[Bucket notification] in demo
+
+    rawBucket:R -- L:bucketNotification
+    bucketNotification:R -- L:unzipLambda
+    unzipLambda:R -- L:processedBucket
+```
+
+### Workflows
+
+```mermaid
+---
+title: Demo workflow
+---
+flowchart TD
+    start((.ZIP uploaded to s3://raw/dogs/landing prefix))
+    bucketNotification(Bucket notification)
+
+    subgraph UnzipLambda
+        lambdaStart(For each file in .ZIP)
+        startPartition(Grabs year/month/day from filename)
+        uploads(Uploads to s3://processed/dogs/daily/<partition>)
+
+    end
+
+    sns[\Send failure notification to topic/]
+    endNode((Processed complete))
+
+    start -- triggers --> bucketNotification
+    bucketNotification -- triggers --> UnzipLambda
+
+    lambdaStart --> startPartition
+    startPartition --> uploads
+    uploads -- If all succeed --> endNode
+    uploads -- If fail --> sns
+    sns --> endNode
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
