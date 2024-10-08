@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         folder: [
-          "./infrastructure/modules/additional_s3_files",
+          "./infrastructure/modules/s3_files",
           "./infrastructure/modules/lambda",
           "./infrastructure/modules/s3_bucket",
           "./infrastructure/modules/s3_bucket_notifications",
@@ -49,7 +49,7 @@ jobs:
     strategy:
       matrix:
         folder: [
-          "./infrastructure/modules/additional_s3_files",
+          "./infrastructure/modules/s3_files",
           "./infrastructure/modules/lambda",
           "./infrastructure/modules/s3_bucket",
           "./infrastructure/modules/s3_bucket_notifications",
