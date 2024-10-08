@@ -53,10 +53,10 @@ locals {
       source_folder : "application/unzip-lambda/unzip_lambda"
       handler : "lambda_function.lambda_handler"
       environment_variables : {
-        ERROR_SNS_TOPIC = data.aws_sns_topic.known_topics["etl-failure"].arn,
-        TARGET_PREFIX   = "dogs/daily",
-        TARGET_BUCKET   = local.known_buckets.processed.name,
-        LOG_LEVEL       = "INFO"
+        ERROR_SNS_TOPIC    = data.aws_sns_topic.known_topics["etl-failure"].arn,
+        TARGET_PREFIX      = "dogs/daily",
+        TARGET_BUCKET_NAME = local.known_buckets.processed.name,
+        LOG_LEVEL          = "INFO"
       }
       iam_policy_statements : [
         {

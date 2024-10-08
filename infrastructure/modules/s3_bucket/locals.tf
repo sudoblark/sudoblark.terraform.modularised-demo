@@ -34,7 +34,7 @@ locals {
       versioning : true,
       enable_kms : true,
       prefixes = [
-        "dogs/landing"
+        "dogs/landing/"
       ]
     },
     {
@@ -43,7 +43,7 @@ locals {
       versioning : true,
       enable_kms : true,
       prefixes = [
-        "dogs/daily"
+        "dogs/daily/"
       ]
     },
     {

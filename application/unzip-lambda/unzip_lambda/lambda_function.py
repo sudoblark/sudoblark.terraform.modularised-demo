@@ -26,11 +26,10 @@ import io
 # Third-party modules
 import boto3
 
-LOGGER: logging.Logger = logging.get_logger(__name__)
+LOGGER: logging.Logger = logging.getLogger(__name__)
 ERROR_SNS_TOPIC: str = os.environ['ERROR_SNS_TOPIC']
 TARGET_PREFIX: str = "dogs/daily"
 TARGET_BUCKET_NAME: str = os.environ['TARGET_BUCKET_NAME']
-SOURCE_PREFIX: str = "dogs/landing"
 
 logging_level: str = os.environ.get("LOG_LEVEL")
 LOGGER.setLevel(logging_level if logging_level is not None else "INFO")
@@ -91,9 +90,9 @@ def get_date_partition(file_key) -> (str, str, str):
     LOGGER.info(f"get_date_partition for file_key = {file_key}")
     head, file_name = ntpath.split(file_key)
 
-    year = file_name[0, 4]
-    month = file_name[4, 6]
-    day = file_name[6, 8]
+    year = file_name[0:4]
+    month = file_name[4:6]
+    day = file_name[6:8]
 
     LOGGER.info(f"year = {year}, month = {month}, day = {day}")
 
@@ -140,14 +139,17 @@ def unzip_file(source_bucket: str,
         try:
             s3_client.upload_fileobj(
                 zip_buffer.open(filename),
-                bucket=destination_bucket,
+                Bucket=destination_bucket,
                 Key=destination_path
             )
             LOGGER.info(f"Successfully unzipped {filename}")
         except Exception as e:
             failed = True
             LOGGER.error(f"Failed to unzip {filename}")
-            raise RuntimeError("Unable to unzip {filename}")
+            LOGGER.error(e)
+            raise RuntimeError(f"Unable to unzip {filename}")
+        finally:
+            counter += 1
 
     return not failed
 

@@ -2,7 +2,7 @@ locals {
   known_buckets = {
     raw : {
       name : lower("${var.environment}-${var.application_name}-raw")
-      arn : lower("arn:aws:s3:::fom-${var.environment}-${var.application_name}-raw")
+      arn : lower("arn:aws:s3:::${var.environment}-${var.application_name}-raw")
     },
   }
   known_lambdas = {
