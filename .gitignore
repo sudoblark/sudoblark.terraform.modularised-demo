@@ -232,5 +232,3 @@ terraform.rc
 
 # Temp dev files
 dev_scratchpad/*
-
-**/*.zip
