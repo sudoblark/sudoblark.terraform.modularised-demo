@@ -8,7 +8,7 @@ locals {
 }
 
 module "lambda" {
-  source           = "github.com/sudoblark/sudoblark.terraform.module.aws.lambda?ref=1.0.0"
+  source           = "github.com/sudoblark/sudoblark.terraform.module.aws.lambda?ref=1.0.1"
   application_name = var.application_name
   environment      = var.environment
   raw_lambdas      = local.actual_raw_lambdas

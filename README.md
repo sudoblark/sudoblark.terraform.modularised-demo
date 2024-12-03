@@ -66,8 +66,7 @@ It's counter may be considered to be [sudoblark.terraform.github](https://github
 , which is an example mono-repo to manage all aspects of a single SaaS product in one place.
 
 For now, the repo is intended to be used in workshops/conferences to demonstrate a data-structure driven approach
-to Terraform - and as such the underlying modules are private, so cannot be initialised by anyone
-outside of Sudoblark.
+to Terraform.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -238,14 +237,7 @@ cd infrastructure/example-account
 export AWS_DEFAULT_PROFILE=<PROFILE-NAME>
 ```
 
-3. For now, access to the Sudoblark GitHub org is required for the underlying modules,
-so you'll need to use a GITHUB_TOKEN to download these modules:
-
-```sh
-export GITHUB_TOKEN=<TOKEN>
-```
-
-4. ZIP the lambda (Note in a production environment this would usually be done via CI/CD)
+3. ZIP the lambda (Note in a production environment this would usually be done via CI/CD)
 
 ```sh
 cd application/unzip-lambda/unzip_lambda
@@ -262,7 +254,7 @@ terraform plan
 terraform apply
 ```
 
-4. Simply tear-down when required
+5. Simply tear-down when required
 
 ```sh
 terraform destroy
