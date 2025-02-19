@@ -6,8 +6,9 @@ env:
   AWS_DEFAULT_REGION: eu-west-2
   REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   ORG_GITHUB_TOKEN: ${{ secrets.SUDOBLARK_GITHUB_TOKEN }}
-on:
-  workflow_dispatch:
+
+on: workflow_dispatch
+
 jobs:
   plan:
     name: Run Terraform plan
@@ -37,7 +38,7 @@ jobs:
     needs: plan
     if: success()
     steps:
-    - name: Wait for approval
+    - uses: trstringer/manual-approval@v1
       with:
         secret: ${{ env.REPO_GITHUB_TOKEN }}
         approvers: benjaminlukeclark
