@@ -1,26 +1,35 @@
+---
 name: sudoblark.terraform.modularised-demo/deployment/sudoblark/deploy
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.SUDOBLARK_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.SUDOBLARK_AWS_ACCESS_KEY_VALUE }}
   AWS_DEFAULT_REGION: eu-west-2
-  # Automatically generated token unique to this repo per workflow execution
   REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  # Explicitly provided token in ORG to access entire organisation
   ORG_GITHUB_TOKEN: ${{ secrets.SUDOBLARK_GITHUB_TOKEN }}
-
 on:
-  workflow_dispatch:
-
+  workflow_dispatch: null
 permissions:
   contents: read
   pull-requests: write
-
 jobs:
   plan:
-    name: "Run Terraform plan"
+    name: Run Terraform plan
+    runs-on: ubuntu-20.04
   steps:
     - uses: actions/checkout@v3
       env:
         GITHUB_TOKEN: ${{ env.REPO_GITHUB_TOKEN }}
 
+    - name: Auto-discover Terraform version
+      run: |
+        TERRAFORM_VERSION=$(cat ../../infrastructure/example-account/.terraform-version)
+        echo "TERRAFORM_VERSION=$TERRAFORM_VERSION" >> $GITHUB_ENV
+
     - uses: sudoblark/sudoblark.github-actions.library/terraform/plan.yaml@feature/add-terraform-and-python-tasks
+      with:
+        terraform_version: $TERRAFORM_VERSION
+        working_directory: infrastructure/example-account
+        artefact_precix: demo
+        aws_region: eu-west-2
+        aws_access_key: $AWS_ACCESS_KEY_ID
+        aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
