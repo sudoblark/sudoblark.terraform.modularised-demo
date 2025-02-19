@@ -69,6 +69,15 @@ jobs:
       run: |
         TERRAFORM_VERSION=$(cat infrastructure/sudoblark/.terraform-version)
         echo "TERRAFORM_VERSION=$TERRAFORM_VERSION" >> $GITHUB_ENV
+      shell: bash
+
+    - name: ZIP lambdas
+      run: |
+        cd application/unzip-lambda/unzip_lambda
+        zip -r lambda.zip lambda_function.py
+        mkdir src
+        mv lambda.zip src
+      shell: bash
 
     - uses: sudoblark/sudoblark.github-actions.library/terraform/apply@feature/add-terraform-and-python-tasks
       with:

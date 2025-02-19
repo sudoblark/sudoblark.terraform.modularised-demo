@@ -6,6 +6,7 @@ module "lambda" {
 
   depends_on = [
     module.sns,
-    module.application_registry
+    module.application_registry,
+    module.s3_bucket
   ]
 }
