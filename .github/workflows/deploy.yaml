@@ -9,6 +9,9 @@ env:
 
 on: workflow_dispatch
 
+permissions:
+  issues: write
+
 jobs:
   plan:
     name: Run Terraform plan
