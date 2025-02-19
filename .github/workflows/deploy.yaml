@@ -45,7 +45,7 @@ jobs:
     name: Wait for approval
     runs-on: ubuntu-20.04
     needs: plan
-    if: success() && ${{ inputs.apply }}
+    if: ${{ success() && inputs.apply  }}
     steps:
     - uses: trstringer/manual-approval@v1
       with:
