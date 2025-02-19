@@ -7,10 +7,7 @@ env:
   REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   ORG_GITHUB_TOKEN: ${{ secrets.SUDOBLARK_GITHUB_TOKEN }}
 on:
-  workflow_dispatch: null
-permissions:
-  contents: read
-  pull-requests: write
+  workflow_dispatch:
 jobs:
   plan:
     name: Run Terraform plan
@@ -28,8 +25,46 @@ jobs:
     - uses: sudoblark/sudoblark.github-actions.library/terraform/plan.yaml@feature/add-terraform-and-python-tasks
       with:
         terraform_version: $TERRAFORM_VERSION
-        working_directory: infrastructure/example-account
-        artefact_precix: demo
+        working_directory: infrastructure/sudoblark
+        artefact_prefix: sudoblark
+        aws_region: eu-west-2
+        aws_access_key: $AWS_ACCESS_KEY_ID
+        aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+
+  approval:
+    name: Wait for approval
+    runs-on: ubuntu-20.04
+    needs: plan
+    if: success()
+    steps:
+    - name: Wait for approval
+      with:
+        secret: ${{ env.REPO_GITHUB_TOKEN }}
+        approvers: benjaminlukeclark
+        minimum-approvals: 1
+        issue-title: "Deploying sudoblark.terraform.modularised-demo to sudoblark"
+        issue-body: "Please approve or deny the deployment."
+        exclude-workflow-initiator-as-approver: false
+
+  apply:
+    name: Terraform apply
+    runs-on: ubuntu-20.04
+    needs: approval
+    steps:
+    - uses: actions/checkout@v3
+      env:
+        GITHUB_TOKEN: ${{ env.REPO_GITHUB_TOKEN }}
+
+    - name: Auto-discover Terraform version
+      run: |
+        TERRAFORM_VERSION=$(cat ../../infrastructure/example-account/.terraform-version)
+        echo "TERRAFORM_VERSION=$TERRAFORM_VERSION" >> $GITHUB_ENV
+
+    - uses: sudoblark/sudoblark.github-actions.library/terraform/apply.yaml@feature/add-terraform-and-python-tasks
+      with:
+        terraform_version: $TERRAFORM_VERSION
+        working_directory: infrastructure/sudoblark
+        artefact: demo-terraform-artefact
         aws_region: eu-west-2
         aws_access_key: $AWS_ACCESS_KEY_ID
         aws_secret_access_key: $AWS_SECRET_ACCESS_KEY

@@ -99,7 +99,8 @@ The repo structure is relatively simple:
 such that Python apps following their respective best-practices, and we
 have a single source of truth for state machine JSON etc.
 - `infrastructure` contains both:
-  - `example-account` folders, one per account, which instantiate modules
+  - `sudoblark` folder which instantiates modules for the account, you may have `n` folders here - one for each
+    account - provided they all use the same stack
   - `modules` folder to act as a top-level for re-usable Terraform modules
 
 This repo is intended to be used for demonstration purposes when delivering
@@ -219,9 +220,10 @@ per above.
 
 ### Deploying Terraform
 
-The `main.tf` file in `example-account` is left deliberately blank, such
-that this may be instantiated in any AWS Infrastructure required for
-demonstration or learning purposes.
+The `main.tf` file in `sudoblark` configures a backend state.
+
+Clone this repo, and change this to your backend in order to instantiate
+in our own account... otherwise this is suitable for demonstration purposes.
 
 Simply:
 
