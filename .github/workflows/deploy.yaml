@@ -13,24 +13,24 @@ jobs:
   plan:
     name: Run Terraform plan
     runs-on: ubuntu-20.04
-  steps:
-    - uses: actions/checkout@v3
-      env:
-        GITHUB_TOKEN: ${{ env.REPO_GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+        env:
+          GITHUB_TOKEN: ${{ env.REPO_GITHUB_TOKEN }}
 
-    - name: Auto-discover Terraform version
-      run: |
-        TERRAFORM_VERSION=$(cat ../../infrastructure/example-account/.terraform-version)
-        echo "TERRAFORM_VERSION=$TERRAFORM_VERSION" >> $GITHUB_ENV
+      - name: Auto-discover Terraform version
+        run: |
+          TERRAFORM_VERSION=$(cat ../../infrastructure/example-account/.terraform-version)
+          echo "TERRAFORM_VERSION=$TERRAFORM_VERSION" >> $GITHUB_ENV
 
-    - uses: sudoblark/sudoblark.github-actions.library/terraform/plan.yaml@feature/add-terraform-and-python-tasks
-      with:
-        terraform_version: $TERRAFORM_VERSION
-        working_directory: infrastructure/sudoblark
-        artefact_prefix: sudoblark
-        aws_region: eu-west-2
-        aws_access_key: $AWS_ACCESS_KEY_ID
-        aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+      - uses: sudoblark/sudoblark.github-actions.library/terraform/plan.yaml@feature/add-terraform-and-python-tasks
+        with:
+          terraform_version: $TERRAFORM_VERSION
+          working_directory: infrastructure/sudoblark
+          artefact_prefix: sudoblark
+          aws_region: eu-west-2
+          aws_access_key: $AWS_ACCESS_KEY_ID
+          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
 
   approval:
     name: Wait for approval
