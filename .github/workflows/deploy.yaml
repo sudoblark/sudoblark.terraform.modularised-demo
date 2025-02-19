@@ -26,7 +26,7 @@ jobs:
       - uses: sudoblark/sudoblark.github-actions.library/terraform/plan@feature/add-terraform-and-python-tasks
         with:
           terraform_version: $TERRAFORM_VERSION
-          working_directory: infrastructure/sudoblark
+          working_directory: $GITHUB_WORKSPACE/infrastructure/sudoblark
           artefact_prefix: sudoblark
           aws_region: eu-west-2
           aws_access_key: $AWS_ACCESS_KEY_ID
@@ -64,7 +64,7 @@ jobs:
     - uses: sudoblark/sudoblark.github-actions.library/terraform/apply@feature/add-terraform-and-python-tasks
       with:
         terraform_version: $TERRAFORM_VERSION
-        working_directory: infrastructure/sudoblark
+        working_directory: $GITHUB_WORKSPACE/infrastructure/sudoblark
         artefact: demo-terraform-artefact
         aws_region: eu-west-2
         aws_access_key: $AWS_ACCESS_KEY_ID
