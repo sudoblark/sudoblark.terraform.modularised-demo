@@ -20,7 +20,7 @@ jobs:
 
       - name: Auto-discover Terraform version
         run: |
-          TERRAFORM_VERSION=$(cat ../../infrastructure/sudoblark/.terraform-version)
+          TERRAFORM_VERSION=$(cat infrastructure/sudoblark/.terraform-version)
           echo "TERRAFORM_VERSION=$TERRAFORM_VERSION" >> $GITHUB_ENV
 
       - uses: sudoblark/sudoblark.github-actions.library/terraform/plan@feature/add-terraform-and-python-tasks
@@ -58,7 +58,7 @@ jobs:
 
     - name: Auto-discover Terraform version
       run: |
-        TERRAFORM_VERSION=$(cat ../../infrastructure/sudoblark/.terraform-version)
+        TERRAFORM_VERSION=$(cat infrastructure/sudoblark/.terraform-version)
         echo "TERRAFORM_VERSION=$TERRAFORM_VERSION" >> $GITHUB_ENV
 
     - uses: sudoblark/sudoblark.github-actions.library/terraform/apply@feature/add-terraform-and-python-tasks
