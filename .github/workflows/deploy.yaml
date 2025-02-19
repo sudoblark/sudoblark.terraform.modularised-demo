@@ -74,7 +74,7 @@ jobs:
       with:
         terraform_version: $TERRAFORM_VERSION
         working_directory: $GITHUB_WORKSPACE/infrastructure/sudoblark
-        artefact: demo-terraform-artefact
+        artefact: sudoblark-terraform-artefact
         aws_region: eu-west-2
         aws_access_key: $AWS_ACCESS_KEY_ID
         aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
