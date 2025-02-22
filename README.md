@@ -84,6 +84,9 @@ to Terraform.
 * [Black](https://black.readthedocs.io/en/stable/)
 * [Flake8](https://flake8.pycqa.org/en/latest/index.html)
 
+#### Pipelines
+* [sudoblark.github-actions.library 1.0.0](https://github.com/sudoblark/sudoblark.github-actions.library/releases/tag/1.0.0)
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -219,6 +222,16 @@ Note: This section assumes you've installed pre-requisites as
 per above.
 
 ### Deploying Terraform
+
+> **_NOTE:_** There is an example of continuous delivery in the form
+> of the .github/deploy.yaml workflow. However, as this is continuous
+> delivery - and not deployment - it is gated behind the approval
+> of a member of Sudoblark and thus is intended to be used in workshop
+> settings only. However, feel free to reference as an example of both
+> continuous delivery, a pull model for CI/CD actions, and usage of GitHub
+> composite actions.
+>
+> See below for instructions on how to deploy to your own AWS environment.
 
 The `main.tf` file in `sudoblark` configures a backend state.
 
