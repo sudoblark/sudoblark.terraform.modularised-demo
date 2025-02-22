@@ -32,7 +32,7 @@ jobs:
           TERRAFORM_VERSION=$(cat infrastructure/sudoblark/.terraform-version)
           echo "TERRAFORM_VERSION=$TERRAFORM_VERSION" >> $GITHUB_ENV
 
-      - uses: sudoblark/sudoblark.github-actions.library/terraform/plan@feature/add-terraform-and-python-tasks
+      - uses: sudoblark/sudoblark.github-actions.library/terraform/plan@1.0.0
         with:
           terraform_version: $TERRAFORM_VERSION
           working_directory: $GITHUB_WORKSPACE/infrastructure/sudoblark
@@ -79,7 +79,7 @@ jobs:
         mv lambda.zip src
       shell: bash
 
-    - uses: sudoblark/sudoblark.github-actions.library/terraform/apply@feature/add-terraform-and-python-tasks
+    - uses: sudoblark/sudoblark.github-actions.library/terraform/apply@f1.0.0
       with:
         terraform_version: $TERRAFORM_VERSION
         working_directory: $GITHUB_WORKSPACE/infrastructure/sudoblark
