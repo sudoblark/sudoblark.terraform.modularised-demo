@@ -79,7 +79,7 @@ jobs:
         mv lambda.zip src
       shell: bash
 
-    - uses: sudoblark/sudoblark.github-actions.library/terraform/apply@f1.0.0
+    - uses: sudoblark/sudoblark.github-actions.library/terraform/apply@1.0.0
       with:
         terraform_version: $TERRAFORM_VERSION
         working_directory: $GITHUB_WORKSPACE/infrastructure/sudoblark
