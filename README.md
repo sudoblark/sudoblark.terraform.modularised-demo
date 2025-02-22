@@ -84,6 +84,9 @@ to Terraform.
 * [Black](https://black.readthedocs.io/en/stable/)
 * [Flake8](https://flake8.pycqa.org/en/latest/index.html)
 
+#### Pipelines
+* [sudoblark.github-actions.library 1.0.0](https://github.com/sudoblark/sudoblark.github-actions.library/releases/tag/1.0.0)
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -99,7 +102,8 @@ The repo structure is relatively simple:
 such that Python apps following their respective best-practices, and we
 have a single source of truth for state machine JSON etc.
 - `infrastructure` contains both:
-  - `example-account` folders, one per account, which instantiate modules
+  - `sudoblark` folder which instantiates modules for the account, you may have `n` folders here - one for each
+    account - provided they all use the same stack
   - `modules` folder to act as a top-level for re-usable Terraform modules
 
 This repo is intended to be used for demonstration purposes when delivering
@@ -219,9 +223,20 @@ per above.
 
 ### Deploying Terraform
 
-The `main.tf` file in `example-account` is left deliberately blank, such
-that this may be instantiated in any AWS Infrastructure required for
-demonstration or learning purposes.
+> **_NOTE:_** There is an example of continuous delivery in the form
+> of the .github/deploy.yaml workflow. However, as this is continuous
+> delivery - and not deployment - it is gated behind the approval
+> of a member of Sudoblark and thus is intended to be used in workshop
+> settings only. However, feel free to reference as an example of both
+> continuous delivery, a pull model for CI/CD actions, and usage of GitHub
+> composite actions.
+>
+> See below for instructions on how to deploy to your own AWS environment.
+
+The `main.tf` file in `sudoblark` configures a backend state.
+
+Clone this repo, and change this to your backend in order to instantiate
+in our own account... otherwise this is suitable for demonstration purposes.
 
 Simply:
 
