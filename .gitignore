@@ -219,6 +219,8 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+# Lock file automatically managed by Terraform
+**/.terraform.lock.hcl
 
 # PyTest
 **/.pytest_cache
