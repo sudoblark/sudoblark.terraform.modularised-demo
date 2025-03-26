@@ -1,5 +1,5 @@
-
-name: Terraform checks on pull request
+---
+name: continuous-integration/commit-to-pull-request
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.SUDOBLARK_AWS_ACCESS_KEY_ID }}

@@ -1,5 +1,5 @@
 ---
-name: sudoblark.terraform.modularised-demo/deployment/sudoblark/deploy
+name: deployment/sudoblark/deploy
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.SUDOBLARK_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.SUDOBLARK_AWS_ACCESS_KEY_VALUE }}
