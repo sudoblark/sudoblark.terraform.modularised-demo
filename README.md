@@ -54,10 +54,14 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+[![CI](https://github.com/sudoblark/sudoblark.terraform.modularised-demo/actions/workflows/commit-to-pr.yaml/badge.svg)](https://github.com/sudoblark/sudoblark.terraform.modularised-demo/actions/workflows/commit-to-pr.yaml)
+[![CD](https://github.com/sudoblark/sudoblark.terraform.modularised-demo/actions/workflows/deploy.yaml/badge.svg)](https://github.com/sudoblark/sudoblark.terraform.modularised-demo/actions/workflows/deploy.yaml)
+[![Terraform Version](https://img.shields.io/badge/Terraform-1.7%2B-blueviolet?logo=terraform)](https://developer.hashicorp.com/terraform/)
+[![License](https://img.shields.io/github/license/sudoblark/sudoblark.terraform.modularised-demo)](https://github.com/sudoblark/sudoblark.terraform.modularised-demo/blob/main/LICENSE.txt)
+[![Maintained](https://img.shields.io/maintenance/yes/2025)](https://github.com/sudoblark/sudoblark.terraform.modularised-demo)
+[![Status](https://img.shields.io/badge/stability-experimental-orange)](https://github.com/sudoblark/sudoblark.terraform.modularised-demo)
 
 This repo is simply a demo of how a modularised terraform setup may be utilised
 in a micro-repo fashion - i.e. one repo per business-case.
