@@ -25,6 +25,7 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [] My code follows the style guidelines of this project
 - [] I have made corresponding changes to the documentation
 
+
 - [] Terraform validate works locally
 - [] Terraform plan passes in the pipeline with an expected result
 - [] Terraform plan does not show any unsuspected terraform destroy operations
