@@ -1,0 +1,81 @@
+
+name: Terraform checks on pull request
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.SUDOBLARK_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.SUDOBLARK_AWS_ACCESS_KEY_VALUE }}
+  AWS_DEFAULT_REGION: eu-west-2
+  # Automatically generated token unique to this repo per workflow execution
+  REPO_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # Explicitly provided token in ORG to access entire organisation
+  ORG_GITHUB_TOKEN: ${{ secrets.SUDOBLARK_GITHUB_TOKEN }}
+
+on: [pull_request]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validation:
+    strategy:
+      matrix:
+        folder: ["add", "folders", "here"]
+    name: Terraform validate for ${{ matrix.folder }}
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        env:
+          GITHUB_TOKEN: ${{ env.REPO_GITHUB_TOKEN }}
+
+      - name: terraform validate
+        uses: dflook/terraform-validate@v1
+        with:
+          path: ${{ matrix.folder }}
+
+        env:
+          GITHUB_TOKEN: ${{ env.ORG_GITHUB_TOKEN }}
+          TERRAFORM_HTTP_CREDENTIALS: |
+            github.com/sudoblark=sudoblark-bot:${{ env.ORG_GITHUB_TOKEN }}
+
+  linting:
+    strategy:
+      matrix:
+        folder: ["add", "folders", "here"]
+    name: Terraform lint for ${{ matrix.folder }}
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        env:
+          GITHUB_TOKEN: ${{ env.REPO_GITHUB_TOKEN }}
+
+      - name: Install tflint
+        uses: terraform-linters/setup-tflint@v3
+
+      - name: Run tflint
+        run: tflint
+        working-directory: ${{ matrix.folder }}
+
+  plan:
+    strategy:
+      matrix:
+        folder: ["add", "folders", "here"]
+    name: Terraform plan for ${{ matrix.folder }}
+    runs-on: ubuntu-20.04
+    needs: [validation, linting]
+    steps:
+      - uses: actions/checkout@v3
+        env:
+          GITHUB_TOKEN: ${{ env.REPO_GITHUB_TOKEN }}
+
+      - id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1
+
+      - name: terraform plan
+        uses: dflook/terraform-plan@v1
+        with:
+          path: ${{ matrix.folder }}
+        env:
+          GITHUB_TOKEN: ${{ env.ORG_GITHUB_TOKEN }}
+          TERRAFORM_HTTP_CREDENTIALS: |
+            github.com/sudoblark=sudoblark-bot:${{ env.ORG_GITHUB_TOKEN }}
