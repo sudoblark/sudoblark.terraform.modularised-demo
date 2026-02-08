@@ -9,6 +9,10 @@ resource "aws_athena_workgroup" "workgroup" {
 
     result_configuration {
       output_location = var.results_s3_path
+
+      encryption_configuration {
+        encryption_option = "SSE_S3"
+      }
     }
   }
 }
