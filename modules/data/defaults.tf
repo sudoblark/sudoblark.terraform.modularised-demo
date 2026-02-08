@@ -1,6 +1,6 @@
 locals {
   # Default account identifier
-  account = "aws-sudoblark-development"
+  account = "sudoblark-development"
 
   # Default project identifier
   project = "demos"
@@ -29,12 +29,5 @@ locals {
   # Default notification configurations
   notification_defaults = {
     events = ["s3:ObjectCreated:*"]
-  }
-
-  # Default tags applied to all resources
-  default_tags = {
-    ManagedBy   = "Terraform"
-    Environment = "development"
-    Project     = local.project
   }
 }

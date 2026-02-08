@@ -3,10 +3,10 @@ variable "account" {
   description = "Which account this is being instantiated in."
   type        = string
   validation {
-    condition     = contains(["aws-sudoblark-development", "aws-sudoblark-staging", "aws-sudoblark-production"], var.account)
-    error_message = "Must be either aws-sudoblark-development, aws-sudoblark-staging, or aws-sudoblark-production"
+    condition     = contains(["sudoblark-development", "sudoblark-staging", "sudoblark-production"], var.account)
+    error_message = "Must be either sudoblark-development, sudoblark-staging, or sudoblark-production"
   }
-  default = "aws-sudoblark-development"
+  default = "sudoblark-development"
 }
 
 variable "project" {

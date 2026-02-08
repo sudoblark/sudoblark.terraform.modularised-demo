@@ -21,14 +21,4 @@ resource "aws_lambda_function" "function" {
       variables = var.environment_variables
     }
   }
-
-  tags = merge(
-    var.tags,
-    {
-      Name        = lower("${var.account}-${var.project}-${var.application}-${var.name}")
-      Account     = var.account
-      Project     = var.project
-      Application = var.application
-    }
-  )
 }

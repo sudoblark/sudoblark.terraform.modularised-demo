@@ -22,8 +22,8 @@ run "validate_data_module_outputs" {
 
   # Test that default values are set correctly
   assert {
-    condition     = output.account == "aws-sudoblark-development"
-    error_message = "Account should be 'aws-sudoblark-development'"
+    condition     = output.account == "sudoblark-development"
+    error_message = "Account should be 'sudoblark-development'"
   }
 
   assert {
@@ -58,17 +58,17 @@ run "validate_bucket_naming_convention" {
 
   # Test that bucket names follow the naming convention
   assert {
-    condition     = output.buckets_map["landing"].full_name == "aws-sudoblark-development-demos-tf-micro-repo-landing"
-    error_message = "Landing bucket name doesn't match expected naming convention"
+    condition     = output.buckets_map["landing"].full_name == "sudoblark-development-demos-tf-micro-repo-landing"
+    error_message = "Landing bucket name doesn't match expected pattern"
   }
 
   assert {
-    condition     = output.buckets_map["raw"].full_name == "aws-sudoblark-development-demos-tf-micro-repo-raw"
-    error_message = "Raw bucket name doesn't match expected naming convention"
+    condition     = output.buckets_map["raw"].full_name == "sudoblark-development-demos-tf-micro-repo-raw"
+    error_message = "Raw bucket name doesn't match expected pattern"
   }
 
   assert {
-    condition     = output.buckets_map["processed"].full_name == "aws-sudoblark-development-demos-tf-micro-repo-processed"
+    condition     = output.buckets_map["processed"].full_name == "sudoblark-development-demos-tf-micro-repo-processed"
     error_message = "Processed bucket name doesn't match expected naming convention"
   }
 }
@@ -94,12 +94,12 @@ run "validate_lambda_naming_convention" {
 
   # Test that Lambda names follow the naming convention
   assert {
-    condition     = output.lambdas_map["unzip-processor"].full_name == "aws-sudoblark-development-demos-tf-micro-repo-unzip-processor"
-    error_message = "Unzip processor Lambda name doesn't match expected naming convention"
+    condition     = output.lambdas_map["unzip-processor"].full_name == "sudoblark-development-demos-tf-micro-repo-unzip-processor"
+    error_message = "Unzip processor Lambda name doesn't match expected pattern"
   }
 
   assert {
-    condition     = output.lambdas_map["parquet-converter"].full_name == "aws-sudoblark-development-demos-tf-micro-repo-parquet-converter"
+    condition     = output.lambdas_map["parquet-converter"].full_name == "sudoblark-development-demos-tf-micro-repo-parquet-converter"
     error_message = "Parquet converter Lambda name doesn't match expected naming convention"
   }
 }
@@ -222,32 +222,6 @@ run "validate_notification_cross_references" {
   assert {
     condition     = output.notifications_map["raw"].lambda_notifications_resolved[0].filter_suffix == ".csv"
     error_message = "Raw bucket notification should filter for .csv files"
-  }
-}
-
-run "validate_default_tags_applied" {
-  command = plan
-
-  # Test that default tags are applied to lambdas
-  assert {
-    condition     = output.lambdas_map["unzip-processor"].tags["ManagedBy"] == "Terraform"
-    error_message = "Default ManagedBy tag not applied to unzip-processor Lambda"
-  }
-
-  assert {
-    condition     = output.lambdas_map["parquet-converter"].tags["Environment"] == "development"
-    error_message = "Default Environment tag not applied to parquet-converter Lambda"
-  }
-
-  # Test that default tags are applied to IAM roles
-  assert {
-    condition     = output.iam_roles_map["unzip-processor-role"].tags["Environment"] == "development"
-    error_message = "Default Environment tag not applied to IAM role"
-  }
-
-  assert {
-    condition     = output.iam_roles_map["parquet-converter-role"].tags["Project"] == "demos"
-    error_message = "Default Project tag not applied to IAM role"
   }
 }
 
