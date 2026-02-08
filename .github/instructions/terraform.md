@@ -180,6 +180,72 @@ variable "resources" {
 }
 ```
 
+### Data Module Testing
+
+**Critical for data-driven patterns:** Test data structures to ensure enrichment logic is correct.
+
+**Create tests in `modules/data/*.tftest.hcl`:**
+
+```terraform
+# Mock provider for testing without AWS credentials
+mock_provider "aws" {
+  mock_data "aws_caller_identity" {
+    defaults = {
+      account_id = "123456789012"
+    }
+  }
+}
+
+run "validate_resource_count" {
+  command = plan
+
+  assert {
+    condition     = length(output.resources) == 3
+    error_message = "Expected 3 resources"
+  }
+}
+
+run "validate_naming_convention" {
+  command = plan
+
+  assert {
+    condition     = output.resources_map["example"].full_name == "account-project-app-example"
+    error_message = "Resource name doesn't match naming convention"
+  }
+}
+
+run "validate_cross_references" {
+  command = plan
+
+  assert {
+    condition     = can(regex("^arn:aws:", output.resources_map["example"].computed_arn))
+    error_message = "ARN format is invalid"
+  }
+}
+```
+
+**What to test:**
+- **Resource counts** - Verify expected number of resources created from data
+- **Naming conventions** - Ensure full names match patterns (e.g., `account-project-app-name`)
+- **Character limits** - Validate names stay within AWS limits (e.g., IAM roles < 64 chars)
+- **Cross-references** - Check ARNs and IDs are correctly resolved
+- **Default values** - Confirm defaults are merged correctly
+- **Computed values** - Verify enrichment logic produces expected outputs
+- **JSON validity** - For policy documents, check they're valid JSON
+- **Tag application** - Ensure default tags are applied to all resources
+
+**Testing benefits:**
+- Catch enrichment bugs before deployment
+- Validate naming convention changes don't break limits
+- Ensure cross-references resolve correctly
+- No AWS credentials needed (use mock providers)
+- Fast feedback loop (plan-only tests)
+
+**Run tests:**
+```bash
+terraform test -chdir=modules/data
+```
+
 ---
 
 ## Path-Specific Instructions
