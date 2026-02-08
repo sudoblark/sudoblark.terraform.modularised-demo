@@ -12,5 +12,5 @@ module "athena_workgroups" {
   bytes_scanned_cutoff_per_query     = each.value.bytes_scanned_cutoff_per_query
 
   # Ensure results bucket exists before creating workgroup
-  depends_on = [module.s3]
+  depends_on = [module.s3_buckets]
 }

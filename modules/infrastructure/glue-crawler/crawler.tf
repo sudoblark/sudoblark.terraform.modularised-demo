@@ -4,16 +4,10 @@ resource "aws_glue_crawler" "crawler" {
   description   = var.description
   role          = var.role_arn
   table_prefix  = var.table_prefix
+  schedule      = var.schedule != "" ? var.schedule : null
 
   s3_target {
     path = var.s3_target_path
-  }
-
-  dynamic "schedule" {
-    for_each = var.schedule != "" ? [1] : []
-    content {
-      schedule_expression = var.schedule
-    }
   }
 
   schema_change_policy {
