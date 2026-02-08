@@ -3,8 +3,6 @@ resource "aws_iam_role" "role" {
 
   name               = each.value.full_name
   assume_role_policy = each.value.assume_role_policy
-
-  tags = each.value.tags
 }
 
 resource "aws_iam_role_policy" "inline_policy" {

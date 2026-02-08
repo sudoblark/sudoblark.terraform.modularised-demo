@@ -14,6 +14,5 @@ variable "roles" {
       policy = string
     }))
     managed_policy_arns = list(string)
-    tags                = map(string)
   }))
 }
