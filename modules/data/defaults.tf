@@ -1,6 +1,6 @@
 locals {
   # Default account identifier
-  account = "aws-sudoblark-development"
+  account = "sudoblark-development"
 
   # Default project identifier
   project = "demos"

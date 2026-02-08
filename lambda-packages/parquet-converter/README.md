@@ -62,7 +62,7 @@ Create a test event matching S3 notification structure:
   "Records": [
     {
       "s3": {
-        "bucket": {"name": "aws-sudoblark-development-demos-tf-micro-repo-raw"},
+        "bucket": {"name": "sudoblark-development-demos-tf-micro-repo-raw"},
         "object": {"key": "20260101.csv"}
       }
     }

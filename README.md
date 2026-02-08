@@ -387,19 +387,19 @@ zip -r data.zip *.csv
 2. Upload to landing bucket (triggers unzip Lambda):
 
 ```sh
-aws s3 cp data.zip s3://aws-sudoblark-development-demos-tf-micro-repo-landing/
+aws s3 cp data.zip s3://sudoblark-development-demos-tf-micro-repo-landing/
 ```
 
 3. Verify files extracted to raw bucket:
 
 ```sh
-aws s3 ls s3://aws-sudoblark-development-demos-tf-micro-repo-raw/ --recursive
+aws s3 ls s3://sudoblark-development-demos-tf-micro-repo-raw/ --recursive
 ```
 
 4. Verify parquet files in processed bucket:
 
 ```sh
-aws s3 ls s3://aws-sudoblark-development-demos-tf-micro-repo-processed/ --recursive
+aws s3 ls s3://sudoblark-development-demos-tf-micro-repo-processed/ --recursive
 ```
 
 **Processing Flow:**
