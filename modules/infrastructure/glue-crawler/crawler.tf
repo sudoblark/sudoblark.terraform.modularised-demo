@@ -1,0 +1,45 @@
+resource "aws_glue_security_configuration" "security_config" {
+  name = "${var.name}-security-config"
+
+  encryption_configuration {
+    cloudwatch_encryption {
+      # Disable CloudWatch encryption for demo - would require custom KMS key
+      cloudwatch_encryption_mode = "DISABLED"
+    }
+
+    job_bookmarks_encryption {
+      # Disable job bookmarks encryption for demo - not needed for simple crawler
+      job_bookmarks_encryption_mode = "DISABLED"
+    }
+
+    s3_encryption {
+      s3_encryption_mode = "SSE-S3"
+    }
+  }
+}
+
+resource "aws_glue_crawler" "crawler" {
+  name                   = var.name
+  database_name          = var.database_name
+  description            = var.description
+  role                   = var.role_arn
+  table_prefix           = var.table_prefix
+  schedule               = var.schedule != "" ? var.schedule : null
+  security_configuration = aws_glue_security_configuration.security_config.name
+
+  s3_target {
+    path = var.s3_target_path
+  }
+
+  schema_change_policy {
+    delete_behavior = "LOG"
+    update_behavior = "UPDATE_IN_DATABASE"
+  }
+
+  configuration = jsonencode({
+    Version = 1.0
+    Grouping = {
+      TableGroupingPolicy = "CombineCompatibleSchemas"
+    }
+  })
+}

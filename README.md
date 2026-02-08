@@ -414,18 +414,75 @@ aws s3 ls s3://sudoblark-development-demos-tf-micro-repo-processed/ --recursive
    - Parses CSV content
    - Converts to Parquet format
    - Partitions by date from filename (YYYYmmdd format)
-   - Uploads to `s3://processed/_year=YYYY/_month=MM/_day=DD/data.parquet`
+   - Uploads to `s3://processed/year=YYYY/month=MM/day=DD/data.parquet`
+
+### Querying Data with Athena
+
+After Parquet files are created, you can query them using AWS Athena for SQL-based analytics.
+
+**Run the Glue Crawler to discover schema:**
+
+```sh
+aws glue start-crawler --name sudoblark-development-demos-tf-micro-repo-processed-data-crawler
+```
+
+The crawler will:
+- Scan the processed S3 bucket
+- Automatically detect Parquet schema
+- Discover date-based partitions (`year`/`month`/`day`)
+- Create/update table in Glue Data Catalog
+
+**Query data with Athena:**
+
+```sql
+-- Query all dog data
+SELECT * FROM "sudoblark-development-demos-tf-micro-repo-analytics"."sudoblark_development_demos_tf_micro_repo_processed"
+LIMIT 10;
+
+-- Query specific date partition
+SELECT dog_name, breed, location
+FROM "sudoblark-development-demos-tf-micro-repo-analytics"."sudoblark_development_demos_tf_micro_repo_processed"
+WHERE year='2026' AND month='01' AND day='01';
+
+-- Aggregate by breed
+SELECT breed, COUNT(*) as count
+FROM "sudoblark-development-demos-tf-micro-repo-analytics"."sudoblark_development_demos_tf_micro_repo_processed"
+GROUP BY breed
+ORDER BY count DESC;
+```
+
+**Using the AWS CLI:**
+
+```sh
+# Execute query
+aws athena start-query-execution \
+  --query-string "SELECT * FROM \"sudoblark-development-demos-tf-micro-repo-analytics\".\"sudoblark_development_demos_tf_micro_repo_processed\" LIMIT 10" \
+  --query-execution-context Database=sudoblark-development-demos-tf-micro-repo-analytics \
+  --result-configuration OutputLocation=s3://sudoblark-development-demos-tf-micro-repo-athena-results/ \
+  --work-group sudoblark-development-demos-tf-micro-repo-analytics-workgroup
+
+# Check query results (use query execution ID from above command)
+aws athena get-query-results --query-execution-id <execution-id>
+```
+
+**Benefits of Athena integration:**
+- **No ETL required** - Query Parquet files directly in S3
+- **Automatic partitioning** - Glue Crawler discovers date partitions
+- **Cost-effective** - Pay only for data scanned
+- **Standard SQL** - Use familiar query syntax
+- **Serverless** - No infrastructure to manage
 
 **Pattern Demonstration:**
 
 This example showcases:
 - Data-driven infrastructure configuration
 - Multi-stage event-driven serverless processing
-- Automatic cross-resource linking (buckets → Lambda → notifications)
+- Automatic cross-resource linking (buckets → Lambda → notifications → Glue → Athena)
 - Chained Lambda functions triggered by S3 events
-- Data transformation pipeline (ZIP → CSV → Parquet)
+- Data transformation pipeline (ZIP → CSV → Parquet → Queryable Tables)
 - Consistent naming conventions
 - Declarative infrastructure definitions
+- Analytics-ready data lake with SQL query capabilities
 
 ## License
 

@@ -30,6 +30,9 @@ locals {
     },
     {
       name = "processed"
+    },
+    {
+      name = "athena-results"
     }
   ]
 }
