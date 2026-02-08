@@ -370,11 +370,6 @@ run "validate_athena_workgroup_naming_and_configuration" {
 
   # Verify configuration settings
   assert {
-    condition     = output.athena_workgroups_map["analytics-workgroup"].enforce_workgroup_configuration == true
-    error_message = "Athena workgroup should enforce configuration"
-  }
-
-  assert {
     condition     = output.athena_workgroups_map["analytics-workgroup"].publish_cloudwatch_metrics_enabled == true
     error_message = "Athena workgroup should publish CloudWatch metrics"
   }

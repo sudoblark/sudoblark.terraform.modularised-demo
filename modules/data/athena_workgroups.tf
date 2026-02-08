@@ -10,7 +10,6 @@
 
   Optional fields:
   - description (string): Human-readable description (default: "")
-  - enforce_workgroup_configuration (bool): Force workgroup settings for all queries (default: true)
   - publish_cloudwatch_metrics_enabled (bool): Publish metrics to CloudWatch (default: true)
   - bytes_scanned_cutoff_per_query (number): Per-query data scan limit in bytes (default: 0 for no limit)
 
@@ -24,7 +23,6 @@
     name                                 = "analytics-workgroup"
     results_bucket                       = "athena-results"
     description                          = "Workgroup for analytics queries on ETL pipeline data"
-    enforce_workgroup_configuration      = true
     publish_cloudwatch_metrics_enabled   = true
     bytes_scanned_cutoff_per_query       = 0
   }
@@ -36,7 +34,6 @@ locals {
       name                               = "analytics-workgroup"
       results_bucket                     = "athena-results"
       description                        = "Workgroup for querying processed ETL pipeline data"
-      enforce_workgroup_configuration    = true
       publish_cloudwatch_metrics_enabled = true
       bytes_scanned_cutoff_per_query     = 0
     }

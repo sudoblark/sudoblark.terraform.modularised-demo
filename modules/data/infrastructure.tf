@@ -194,7 +194,6 @@ locals {
         project                            = local.project
         application                        = local.application
         description                        = ""
-        enforce_workgroup_configuration    = true
         publish_cloudwatch_metrics_enabled = true
         bytes_scanned_cutoff_per_query     = 0
       },

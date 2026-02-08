@@ -14,12 +14,6 @@ variable "results_s3_path" {
   type        = string
 }
 
-variable "enforce_workgroup_configuration" {
-  description = "Force workgroup settings for all queries"
-  type        = bool
-  default     = true
-}
-
 variable "publish_cloudwatch_metrics_enabled" {
   description = "Publish query metrics to CloudWatch"
   type        = bool

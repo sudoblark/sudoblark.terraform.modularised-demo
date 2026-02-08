@@ -7,7 +7,6 @@ module "athena_workgroups" {
   name                               = each.value.full_name
   description                        = each.value.description
   results_s3_path                    = each.value.results_s3_path
-  enforce_workgroup_configuration    = each.value.enforce_workgroup_configuration
   publish_cloudwatch_metrics_enabled = each.value.publish_cloudwatch_metrics_enabled
   bytes_scanned_cutoff_per_query     = each.value.bytes_scanned_cutoff_per_query
 

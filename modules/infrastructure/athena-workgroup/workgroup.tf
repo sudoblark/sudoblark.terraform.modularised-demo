@@ -3,7 +3,8 @@ resource "aws_athena_workgroup" "workgroup" {
   description = var.description
 
   configuration {
-    enforce_workgroup_configuration    = var.enforce_workgroup_configuration
+    # Hardcode to true for security compliance - prevents clients from disabling encryption
+    enforce_workgroup_configuration    = true
     publish_cloudwatch_metrics_enabled = var.publish_cloudwatch_metrics_enabled
     bytes_scanned_cutoff_per_query     = var.bytes_scanned_cutoff_per_query > 0 ? var.bytes_scanned_cutoff_per_query : null
 
