@@ -3,23 +3,19 @@ resource "aws_glue_security_configuration" "security_config" {
 
   encryption_configuration {
     cloudwatch_encryption {
-      cloudwatch_encryption_mode = "SSE-KMS"
-      # Use AWS managed key for CloudWatch Logs - no custom key needed
+      # Disable CloudWatch encryption for demo - would require custom KMS key
+      cloudwatch_encryption_mode = "DISABLED"
     }
 
     job_bookmarks_encryption {
-      job_bookmarks_encryption_mode = "CSE-KMS"
-      kms_key_arn                   = data.aws_kms_key.glue.arn
+      # Disable job bookmarks encryption for demo - not needed for simple crawler
+      job_bookmarks_encryption_mode = "DISABLED"
     }
 
     s3_encryption {
       s3_encryption_mode = "SSE-S3"
     }
   }
-}
-
-data "aws_kms_key" "glue" {
-  key_id = "alias/aws/glue"
 }
 
 resource "aws_glue_crawler" "crawler" {
