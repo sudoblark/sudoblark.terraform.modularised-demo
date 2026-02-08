@@ -183,7 +183,7 @@ def handler(event: S3Event, context: Any) -> Dict[str, Any]:
 
     for record in event.records:
         bucket_name: str = record.s3.bucket.name
-        object_key: str = record.s3.object.key
+        object_key: str = record.s3.get_object.key
 
         # Process the object
         result: str = process_s3_object(bucket_name, object_key)
@@ -522,7 +522,7 @@ def handler(event: S3Event, context: Any) -> Dict[str, Any]:
         # Process each record
         for record in event.records:
             bucket_name: str = record.s3.bucket.name
-            object_key: str = record.s3.object.key
+            object_key: str = record.s3.get_object.key
 
             try:
                 result: str = process_object(bucket_name, object_key, config)

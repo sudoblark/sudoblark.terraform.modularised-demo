@@ -67,7 +67,7 @@ def handler(event: S3Event, context: Any) -> Dict[str, Any]:
         ValueError: If configuration is invalid
         Exception: If processing fails critically
     """
-    logger.info(f"Received S3 event with {len(event.records)} record(s)")
+    logger.info("Received S3 event for processing")
 
     try:
         # Load and validate configuration
@@ -80,7 +80,7 @@ def handler(event: S3Event, context: Any) -> Dict[str, Any]:
         for record in event.records:
             try:
                 bucket_name: str = record.s3.bucket.name
-                object_key: str = record.s3.object.key
+                object_key: str = record.s3.get_object.key
 
                 # Validate S3 key for path traversal
                 if ".." in object_key:
@@ -96,7 +96,7 @@ def handler(event: S3Event, context: Any) -> Dict[str, Any]:
 
             except Exception as e:
                 logger.error(f"Failed to process record: {str(e)}", exc_info=True)
-                failed_files.append({"key": record.s3.object.key, "error": str(e)})
+                failed_files.append({"key": record.s3.get_object.key, "error": str(e)})
 
         # Prepare response
         response = {
