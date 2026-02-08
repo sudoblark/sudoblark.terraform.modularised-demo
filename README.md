@@ -138,7 +138,7 @@ Update [modules/data/lambdas.tf](modules/data/lambdas.tf) to add new Lambda func
 {
   name             = "data-validator"
   description      = "Validates incoming data files"
-  zip_file_path    = "./lambda-packages/data-validator.zip"
+  zip_file_path    = "../../lambda-packages/data-validator.zip"
   handler          = "validator.handler"
   runtime          = "python3.11"
   timeout          = 120
