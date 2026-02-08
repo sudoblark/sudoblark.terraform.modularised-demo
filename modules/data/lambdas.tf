@@ -64,6 +64,12 @@ locals {
       timeout       = 120
       memory_size   = 1024
       role_name     = "parquet-converter-role"
+      layers = [
+        # AWS SDK for pandas (includes pandas, pyarrow, numpy, etc.)
+        # Version 11 for Python 3.11 in eu-west-2
+        # See: https://aws-sdk-pandas.readthedocs.io/en/stable/layers.html
+        "arn:aws:lambda:eu-west-2:336392948345:layer:AWSSDKPandas-Python311:11"
+      ]
       environment_variables = {
         PROCESSED_BUCKET = "processed"
         LOG_LEVEL        = "INFO"
