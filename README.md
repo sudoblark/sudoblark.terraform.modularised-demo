@@ -1,135 +1,204 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/sudoblark/sudoblark.terraform.modularised-demo">
-    <img src="docs/logo.png" alt="Logo" width="80" height="80">
-  </a>
 
 <h3 align="center">sudoblark.terraform.modularised-demo</h3>
 
   <p align="center">
-    An example Terraform setup using modularised components to fulfill a use-case - repo managed by sudoblark.terraform.github
-    <br />
+    A data-driven Terraform demonstration showcasing modularised infrastructure patterns for AWS - creating S3 buckets, Lambda functions, and event-driven processing pipelines through declarative configuration.
   </p>
+  <p align="center">
+    <a href="https://github.com/sudoblark/sudoblark.terraform.modularised-demo/actions/workflows/commit-to-pr.yaml">
+      <img src="https://github.com/sudoblark/sudoblark.terraform.modularised-demo/actions/workflows/commit-to-pr.yaml/badge.svg" alt="CI Status">
+    </a>
+    <a href="https://github.com/sudoblark/sudoblark.terraform.modularised-demo/actions/workflows/deploy.yaml">
+      <img src="https://github.com/sudoblark/sudoblark.terraform.modularised-demo/actions/workflows/deploy.yaml/badge.svg" alt="CD Status">
+    </a>
+  </p>
+
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
+    <li><a href="#sudoblark-terraform-modularised-demo">sudoblark.terraform.modularised-demo</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#adding-new-infrastructure">Adding New Infrastructure</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
-          <ul>
-            <li><a href="#infrastructure">Infrastructure</a></li>
-            <li><a href="#application-code">Application code</a></li>
-          </ul>
+        <li><a href="#adding-s3-buckets">Adding S3 Buckets</a></li>
+        <li><a href="#adding-lambda-functions">Adding Lambda Functions</a></li>
+        <li><a href="#configuring-s3-notifications">Configuring S3 Notifications</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#developer-documentation">Developer Documentation</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#configuration">Configuration</a></li>
         <li><a href="#pre-commit-hooks">Pre-commit hooks</a></li>
       </ul>
     </li>
-    <li>
-    <li>
-      <a href="#architecture">Architecture</a>
+    <li><a href="#cicd">CI/CD</a></li>
+    <li><a href="#usage-example">Usage Example</a>
       <ul>
-        <li><a href="#infrastructure">Infrastructure</a></li>
-        <li><a href="#workflows">Workflows</a></li>
+        <li><a href="#deploying-the-example">Deploying the Example</a></li>
+        <li><a href="#testing-the-pipeline">Testing the Pipeline</a></li>
       </ul>
     </li>
-    <li>
-      <a href="#usage">Usage</a>
-      <ul>
-        <li><a href="#deploying-terraform">Deploying Terraform</a></li>
-        <li><a href="#processing-dummy-files">Processing dummy files</a></li>
-      </ul>
-    </li>
+    <li><a href="#license">License</a></li>
   </ol>
 </details>
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
-[![CI](https://github.com/sudoblark/sudoblark.terraform.modularised-demo/actions/workflows/commit-to-pr.yaml/badge.svg)](https://github.com/sudoblark/sudoblark.terraform.modularised-demo/actions/workflows/commit-to-pr.yaml)
-[![CD](https://github.com/sudoblark/sudoblark.terraform.modularised-demo/actions/workflows/deploy.yaml/badge.svg)](https://github.com/sudoblark/sudoblark.terraform.modularised-demo/actions/workflows/deploy.yaml)
-[![Terraform Version](https://img.shields.io/badge/Terraform-1.7%2B-blueviolet?logo=terraform)](https://developer.hashicorp.com/terraform/)
-[![License](https://img.shields.io/github/license/sudoblark/sudoblark.terraform.modularised-demo)](https://github.com/sudoblark/sudoblark.terraform.modularised-demo/blob/main/LICENSE.txt)
-[![Maintained](https://img.shields.io/maintenance/yes/2025)](https://github.com/sudoblark/sudoblark.terraform.modularised-demo)
-[![Status](https://img.shields.io/badge/stability-experimental-orange)](https://github.com/sudoblark/sudoblark.terraform.modularised-demo)
+# sudoblark.terraform.modularised-demo
+Build AWS infrastructure with data-driven Terraform patterns!
 
-This repo is simply a demo of how a modularised terraform setup may be utilised
-in a micro-repo fashion - i.e. one repo per business-case.
+## Architecture
 
-It's counter may be considered to be [sudoblark.terraform.github](https://github.com/sudoblark/sudoblark.terraform.github)
-, which is an example mono-repo to manage all aspects of a single SaaS product in one place.
+This repository demonstrates a modularised, data-driven approach to Terraform infrastructure management. Instead of writing repetitive resource blocks, you define infrastructure in simple data structures that are automatically transformed into AWS resources.
 
-For now, the repo is intended to be used in workshops/conferences to demonstrate a data-structure driven approach
-to Terraform.
+**Core Components:**
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- **`modules/data/`** - Data-driven configuration layer
+  - [buckets.tf](modules/data/buckets.tf) - S3 bucket definitions with folder structures
+  - [lambdas.tf](modules/data/lambdas.tf) - Lambda function configurations
+  - [notifications.tf](modules/data/notifications.tf) - S3 event notification mappings
+  - [defaults.tf](modules/data/defaults.tf) - Default values and common configuration
+  - [infrastructure.tf](modules/data/infrastructure.tf) - Data enrichment and cross-reference resolution
+  - [outputs.tf](modules/data/outputs.tf) - Processed data for infrastructure modules
 
+- **`modules/infrastructure/`** - Reusable infrastructure modules
+  - [s3/](modules/infrastructure/s3/) - S3 bucket creation with optional folder pre-creation
+  - [lambda/](modules/infrastructure/lambda/) - Lambda function deployment from ZIP files
+  - [s3-notifications/](modules/infrastructure/s3-notifications/) - S3 bucket event notifications to Lambda
 
+- **`infrastructure/aws-sudoblark-development/`** - Environment-specific instantiation
+  - Consumes the data module
+  - Creates actual AWS resources using infrastructure modules
+  - Manages state and provider configuration
 
-### Built With
+**How It Works:**
 
-#### Infrastructure
-* [Terraform v1.5.1](https://github.com/hashicorp/terraform/releases/tag/v1.5.1)
-* [tfenv](https://github.com/tfutils/tfenv)
-* [awscli](https://aws.amazon.com/cli/)
+1. **Data Definition** (`modules/data/`):
+   - Define infrastructure in simple Terraform local values
+   - Specify buckets, Lambdas, and their relationships
+   - Configuration files include comprehensive docstrings with examples
 
-#### Application code
-* [Python 3.10](https://peps.python.org/pep-0619/)
-* [Black](https://black.readthedocs.io/en/stable/)
-* [Flake8](https://flake8.pycqa.org/en/latest/index.html)
+2. **Data Enrichment** (`modules/data/infrastructure.tf`):
+   - Automatically computes full resource names following naming conventions
+   - Merges specific configurations with defaults
+   - Resolves cross-references (bucket names → ARNs, Lambda names → ARNs)
+   - Creates lookup maps for easy access
 
-#### Pipelines
-* [sudoblark.github-actions.library 1.0.0](https://github.com/sudoblark/sudoblark.github-actions.library/releases/tag/1.0.0)
+3. **Infrastructure Creation** (`infrastructure/aws-sudoblark-development/`):
+   - Iterates over enriched data structures
+   - Passes resolved configurations to infrastructure modules
+   - Infrastructure modules create actual AWS resources
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+4. **Event-Driven Processing**:
+   - S3 buckets trigger Lambda functions on file uploads
+   - Notification configurations link buckets and Lambdas declaratively
+   - Example: ZIP file processing pipeline with automatic partitioning
 
+**Key Benefits:**
 
+- **Declarative**: Define "what" you want, not "how" to create it
+- **DRY Principle**: Write configuration once, reuse across resources
+- **Consistency**: Automatic naming conventions and tagging
+- **Scalability**: Add new resources by adding data entries, not code
+- **Maintainability**: Clear separation between data and logic
 
-<!-- GETTING STARTED -->
-## Getting Started
+## Adding New Infrastructure
 
-Below we outlined how to interact with both Infrastructure and Application code bases.
+All infrastructure changes are made by updating data structures in `modules/data/`. The Terraform code automatically processes these definitions and creates the corresponding AWS resources.
 
-The repo structure is relatively simple:
+### Adding S3 Buckets
 
-- `application` is the top-level for app code. Subfolders in here should be made
-such that Python apps following their respective best-practices, and we
-have a single source of truth for state machine JSON etc.
-- `infrastructure` contains both:
-  - `sudoblark` folder which instantiates modules for the account, you may have `n` folders here - one for each
-    account - provided they all use the same stack
-  - `modules` folder to act as a top-level for re-usable Terraform modules
+Update [modules/data/buckets.tf](modules/data/buckets.tf) to add new S3 buckets:
 
-This repo is intended to be used for demonstration purposes when delivering
-conferences, but is also made public such that conference attendees may
-query it in their own time as well.
+```hcl
+# modules/data/buckets.tf
+{
+  name         = "analytics"
+  folder_paths = ["reports", "archive"]
+}
+```
+
+The bucket will automatically:
+- Be named `account-project-application-analytics` (all lowercase)
+- Pre-create the specified folder paths
+- Include default tags
+
+### Adding Lambda Functions
+
+Update [modules/data/lambdas.tf](modules/data/lambdas.tf) to add new Lambda functions:
+
+```hcl
+# modules/data/lambdas.tf
+{
+  name             = "data-validator"
+  description      = "Validates incoming data files"
+  zip_file_path    = "../../lambda-packages/data-validator.zip"
+  handler          = "validator.handler"
+  runtime          = "python3.11"
+  timeout          = 120
+  memory_size      = 1024
+  role_name        = "data-validator-role"
+  environment_variables = {
+    VALIDATION_RULES = "strict"
+    LOG_LEVEL        = "DEBUG"
+  }
+}
+```
+
+The Lambda will automatically:
+- Be named `account-project-application-data-validator`
+- Have its role ARN resolved from `role_name`
+- Merge with defaults for unspecified values
+- Include default tags
+
+### Configuring S3 Notifications
+
+Update [modules/data/notifications.tf](modules/data/notifications.tf) to link buckets with Lambda functions:
+
+```hcl
+# modules/data/notifications.tf
+{
+  bucket_name = "analytics"
+  lambda_notifications = [
+    {
+      lambda_name   = "data-validator"
+      events        = ["s3:ObjectCreated:Put"]
+      filter_prefix = "reports/"
+      filter_suffix = ".json"
+    }
+  ]
+}
+```
+
+The notification will automatically:
+- Resolve bucket and Lambda ARNs from names
+- Configure S3 event triggers
+- Apply event filters for specific file patterns
+
+**Configuration Pattern:**
+- Each data file has comprehensive docstrings explaining structure and constraints
+- All cross-references are resolved automatically
+- Defaults are merged intelligently
+- Naming conventions are applied consistently
+
+## Developer Documentation
+
+The below documentation is intended to assist a developer with interacting with the Terraform code in order to add, remove or update AWS infrastructure configurations.
+
+All instructions, unless otherwise stated, are explicitly for MacOS.
 
 ### Prerequisites
-
-Note: Below instructions are for MacOS only, alteration may be required
-to get this working on other operating systems.
 
 * tfenv
 ```sh
 git clone https://github.com/tfutils/tfenv.git ~/.tfenv
 echo 'export PATH="$HOME/.tfenv/bin:$PATH"' >> ~/.bash_profile
-```
-
-* awscli
-```sh
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-./aws/install
 ```
 
 * Virtual environment with pre-commit installed
@@ -140,181 +209,224 @@ source venv/bin/activate
 pip install pre-commit
 ```
 
-* Poetry
+* AWS CLI configured with appropriate credentials
 ```sh
-pip install -U pip setuptools
-pip install poetry
+aws configure --profile sudoblark-development
 ```
 
-### Pre-commit hooks
-Various pre-commit hooks are in place in order to ensure consistency across the codebases.
+### Configuration
 
-You may run these yourself as follows:
+1. Update [modules/data/buckets.tf](modules/data/buckets.tf) to define S3 buckets
+2. Update [modules/data/lambdas.tf](modules/data/lambdas.tf) to define Lambda functions
+3. Update [modules/data/notifications.tf](modules/data/notifications.tf) to configure event-driven processing
+4. Update [modules/data/defaults.tf](modules/data/defaults.tf) to adjust default values (if needed)
+
+All data files include comprehensive docstrings with field descriptions, constraints, and examples.
+
+### Pre-commit hooks
+
+This repository utilises pre-commit to ensure code quality on every commit. The hooks automatically format and validate code before it's committed.
+
+Install and run with:
 
 ```sh
 source venv/bin/activate
 pip install pre-commit
+pre-commit install
 pre-commit run --all-files
 ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+**Pre-commit hooks include:**
 
-<!-- ARCHITECTURE -->
-## Architecture
+- **Terraform formatting** - Ensures consistent Terraform code style
+- **YAML linting** - Validates GitHub Actions workflows
+- **General file fixes** - Trailing whitespace, end-of-file fixes, merge conflict detection
 
-The below sections outline architecture diagrams and explanations in order to better understand just _what_ this
-demo repo both in terms of infrastructure and application workflows.
+All formatting is automatic - the hooks will fix issues and re-run validation.
 
-### Infrastructure
+## CI/CD
+
+This repository uses GitHub Actions for quality checks on pull requests:
+
+- **Format Check** - Validates Terraform formatting
+- **Validate** - Runs `terraform validate`
+- **Checkov** - Security and best practices scanning
+- **Test** - Runs `terraform test` (if applicable)
+- **Plan** - Generates and displays terraform plan
+
+All checks must pass before merging to main. On merge to main (with approval), Terraform apply runs automatically.
+
+## Usage Example
+
+This repository includes a complete working example of an event-driven file processing pipeline:
+
+**Infrastructure Components:**
 
 ```mermaid
 architecture-beta
     group demo(cloud)[AWS Account]
 
-    service unzipLambda(server)[Unzip lambda] in demo
-    service rawBucket(database)[raw bucket] in demo
-    service processedBucket(database)[processed bucket] in demo
-    service bucketNotification(disk)[Bucket notification] in demo
+    service unzipLambda(server)[Unzip Lambda] in demo
+    service parquetLambda(server)[Parquet Converter] in demo
+    service landingBucket(database)[Landing Bucket] in demo
+    service rawBucket(database)[Raw Bucket] in demo
+    service processedBucket(database)[Processed Bucket] in demo
+    service bucketNotification1(disk)[Bucket Notification] in demo
+    service bucketNotification2(disk)[Bucket Notification] in demo
 
-    rawBucket:R -- L:bucketNotification
-    bucketNotification:R -- L:unzipLambda
-    unzipLambda:R -- L:processedBucket
+    landingBucket:R -- L:bucketNotification1
+    bucketNotification1:R -- L:unzipLambda
+    unzipLambda:R -- L:rawBucket
+    rawBucket:R -- L:bucketNotification2
+    bucketNotification2:R -- L:parquetLambda
+    parquetLambda:R -- L:processedBucket
 ```
 
-Note: `s3_files` module, as you can see, is not needed for ETL. It is instead included
-as it's one of the simplest data-driven modules you can have. Therefore, it's included
-to be used as a simple, but useful, example in a conference/workshop setting.
-
-### Workflows
+**Processing Workflow:**
 
 ```mermaid
----
-title: Demo workflow
----
-flowchart TD
-    start((.ZIP uploaded to s3://raw/dogs/landing prefix))
-    bucketNotification(Bucket notification)
+sequenceDiagram
+    participant User
+    participant Landing as Landing Bucket
+    participant S3Event1 as S3 Notification
+    participant Unzip as Unzip Lambda
+    participant Raw as Raw Bucket
+    participant S3Event2 as S3 Notification
+    participant Parquet as Parquet Lambda
+    participant Processed as Processed Bucket
+    participant CW as CloudWatch Logs
 
-    subgraph UnzipLambda
-        lambdaStart(For each file in .ZIP)
-        startPartition(Grabs year/month/day from filename)
-        uploads(Uploads to s3://processed/dogs/daily/<partition>)
+    User->>Landing: Upload .zip file
+    activate Landing
+    Landing->>S3Event1: ObjectCreated event
+    deactivate Landing
 
+    activate S3Event1
+    S3Event1->>Unzip: Trigger Lambda
+    deactivate S3Event1
+
+    activate Unzip
+    Unzip->>Landing: GetObject (download .zip)
+    Landing-->>Unzip: ZIP file contents
+    Unzip->>Unzip: Extract CSV files
+    loop For each CSV file
+        Unzip->>Raw: PutObject (upload CSV)
     end
+    Unzip->>CW: Log processing results
+    deactivate Unzip
 
-    sns[\Send failure notification to topic/]
-    endNode((Processed complete))
+    activate Raw
+    Raw->>S3Event2: ObjectCreated event
+    deactivate Raw
 
-    start -- triggers --> bucketNotification
-    bucketNotification -- triggers --> UnzipLambda
+    activate S3Event2
+    S3Event2->>Parquet: Trigger Lambda
+    deactivate S3Event2
 
-    lambdaStart --> startPartition
-    startPartition --> uploads
-    uploads -- If all succeed --> endNode
-    uploads -- If fail --> sns
-    sns --> endNode
+    activate Parquet
+    Parquet->>Raw: GetObject (download CSV)
+    Raw-->>Parquet: CSV file contents
+    Parquet->>Parquet: Parse CSV data
+    Parquet->>Parquet: Convert to Parquet format
+    Parquet->>Parquet: Extract date from filename
+    Parquet->>Processed: PutObject to year=YYYY/month=MM/day=DD/
+    Parquet->>CW: Log conversion results
+    deactivate Parquet
+
+    Note over User,CW: Pipeline complete: ZIP → CSV → Parquet with date partitioning
 ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### Deploying the Example
 
-<!-- USAGE EXAMPLES -->
-## Usage
+This repository uses dedicated CD pipelines for infrastructure lifecycle management, optimized for workshop and conference demonstrations.
 
-Below we will outline intended use-cases for the repository.
+**CD Pipelines:**
 
-Note: This section assumes you've installed pre-requisites as
-per above.
+- **`.github/workflows/apply.yaml`** - Deploys infrastructure to development
+  - Run before or during workshops/demos
+  - Manual trigger with approval gates
+  - Packages Lambda functions automatically
+  - Deploys all infrastructure to `aws-sudoblark-development`
 
-### Deploying Terraform
+- **`.github/workflows/destroy.yaml`** - Tears down infrastructure
+  - Run after workshops to save costs
+  - Manual trigger with approval gates
+  - Removes all deployed resources
+  - Cleans up development environment
 
-> **_NOTE:_** There is an example of continuous delivery in the form
-> of the .github/deploy.yaml workflow. However, as this is continuous
-> delivery - and not deployment - it is gated behind the approval
-> of a member of Sudoblark and thus is intended to be used in workshop
-> settings only. However, feel free to reference as an example of both
-> continuous delivery, a pull model for CI/CD actions, and usage of GitHub
-> composite actions.
->
-> See below for instructions on how to deploy to your own AWS environment.
+**Usage for Workshops:**
 
-The `main.tf` file in `sudoblark` configures a backend state.
+1. **Before/During Workshop:**
+   - Trigger the `apply` workflow from GitHub Actions
+   - Approve the deployment
+   - Infrastructure is ready for demonstrations
 
-Clone this repo, and change this to your backend in order to instantiate
-in our own account... otherwise this is suitable for demonstration purposes.
+2. **After Workshop:**
+   - Trigger the `destroy` workflow from GitHub Actions
+   - Approve the teardown
+   - All resources are removed to avoid ongoing costs
 
-Simply:
+### Testing the Pipeline
 
-1. Navigate to the instantiation folder:
+The `application/dummy_uploads/` directory contains sample CSV files named in the format `YYYYmmdd.csv`:
 
-```sh
-cd infrastructure/example-account
-```
-
-2. Ensure your shell is authenticated to an appropriate profile for AWS
-
-```sh
-export AWS_DEFAULT_PROFILE=<PROFILE-NAME>
-```
-
-3. ZIP the lambda (Note in a production environment this would usually be done via CI/CD)
-
-```sh
-cd application/unzip-lambda/unzip_lambda
-zip -r lambda.zip lambda_function.py
-mkdir src
-mv lambda.zip src
-```
-
-4. Init, plan and then apply.
-
-```sh
-terraform init
-terraform plan
-terraform apply
-```
-
-5. Simply tear-down when required
-
-```sh
-terraform destroy
-```
-
-### Processing dummy files
-Files under `application/dummy_uploads` contain the contents of the ZIP file our unzip lambda
-unzips from the `raw` to `processed` bucket.
-
-Files names are in the format: `YYYYmmdd.csv` Each file corresponds to dogs viewed that day, with rows
-being in the format of:
-
-```
+```csv
 dog_name, breed, location
-```
-For example, we may have a file named 20241008.csv with a single row:
-
-```
 Cerberus, Molossus, Hades
 ```
 
-Thus indicating that on the 08th October 2024, we spotted Cerberus doing a valiant job guarding the gates to Hates.
+**Upload test files:**
 
-To upload these dummy files after the solution has been deployed in to AWS:
-
-1. First ZIP the files:
+1. Create ZIP archive:
 
 ```sh
 cd application/dummy_uploads
-zip -r uploads.zip .
+zip -r data.zip *.csv
 ```
 
-2. Then, upload the ZIP to the `dev-raw` bucket at the `dogs/landing/` prefix:
+2. Upload to landing bucket (triggers unzip Lambda):
 
 ```sh
-aws s3 rm s3://dev-demo-raw/dogs/landing/uploads.zip
-aws s3 cp ./application/dummy_uploads/uploads.zip s3://dev-demo-raw/dogs/landing/
+aws s3 cp data.zip s3://aws-sudoblark-development-demos-tf-micro-repo-landing/
 ```
-3. This should then trigger an s3 bucket notification to run the lambda.
-4. This lambda, in turn, should unzip the files and re-upload them into the `dev-processed` bucket,
-at the `dogs/daily` root with prefix determined by date. i.e. for 20241008.csv we'd expect
-an upload at `dogs/daily/_year=2024/_month=10/_day=08/viewings`
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+3. Verify files extracted to raw bucket:
+
+```sh
+aws s3 ls s3://aws-sudoblark-development-demos-tf-micro-repo-raw/ --recursive
+```
+
+4. Verify parquet files in processed bucket:
+
+```sh
+aws s3 ls s3://aws-sudoblark-development-demos-tf-micro-repo-processed/ --recursive
+```
+
+**Processing Flow:**
+
+1. **Landing → Raw (Unzip Lambda)**:
+   - Detects `.zip` file upload to landing bucket
+   - Extracts individual CSV files
+   - Uploads CSV files to raw bucket
+
+2. **Raw → Processed (Parquet Converter)**:
+   - Detects `.csv` file upload to raw bucket
+   - Parses CSV content
+   - Converts to Parquet format
+   - Partitions by date from filename (YYYYmmdd format)
+   - Uploads to `s3://processed/_year=YYYY/_month=MM/_day=DD/data.parquet`
+
+**Pattern Demonstration:**
+
+This example showcases:
+- Data-driven infrastructure configuration
+- Multi-stage event-driven serverless processing
+- Automatic cross-resource linking (buckets → Lambda → notifications)
+- Chained Lambda functions triggered by S3 events
+- Data transformation pipeline (ZIP → CSV → Parquet)
+- Consistent naming conventions
+- Declarative infrastructure definitions
+
+## License
+
+See [LICENSE.txt](LICENSE.txt) for details.
