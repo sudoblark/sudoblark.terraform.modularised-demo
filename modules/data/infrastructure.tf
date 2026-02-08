@@ -39,8 +39,8 @@ locals {
       {
         # Computed full Lambda function name
         full_name = lower("${local.account}-${local.project}-${local.application}-${lambda.name}")
-        # Computed role ARN (assuming role exists)
-        role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${lower("${local.account}-${local.project}-${local.application}-${lambda.role_name}")}"
+        # Computed role ARN using abbreviated naming to match IAM role names
+        role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${lower("${local.account_abbr}-${local.project}-${local.application_abbr}-${lambda.role_name}")}"
       }
     )
   ]
@@ -93,8 +93,10 @@ locals {
       },
       role,
       {
-        # Computed full role name
-        full_name = lower("${local.account}-${local.project}-${local.application}-${role.name}")
+        # Computed full role name using abbreviated identifiers to stay within 64 char limit
+        # Format: account_abbr-project-application_abbr-role_name
+        # Example: sudoblark-dev-demos-tf-micro-unzip-processor-role
+        full_name = lower("${local.account_abbr}-${local.project}-${local.application_abbr}-${role.name}")
         # Computed assume role policy document
         assume_role_policy = jsonencode({
           Version = "2012-10-17"

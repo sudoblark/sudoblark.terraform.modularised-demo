@@ -285,43 +285,55 @@ architecture-beta
 **Processing Workflow:**
 
 ```mermaid
----
-title: ZIP File Processing Pipeline
----
-flowchart TD
-    start((.ZIP uploaded to landing bucket))
-    notification1(Landing bucket notification)
+sequenceDiagram
+    participant User
+    participant Landing as Landing Bucket
+    participant S3Event1 as S3 Notification
+    participant Unzip as Unzip Lambda
+    participant Raw as Raw Bucket
+    participant S3Event2 as S3 Notification
+    participant Parquet as Parquet Lambda
+    participant Processed as Processed Bucket
+    participant CW as CloudWatch Logs
 
-    subgraph UnzipLambda
-        unzipStart(Extract files from ZIP)
-        uploadRaw(Upload CSV files to raw bucket)
+    User->>Landing: Upload .zip file
+    activate Landing
+    Landing->>S3Event1: ObjectCreated event
+    deactivate Landing
+
+    activate S3Event1
+    S3Event1->>Unzip: Trigger Lambda
+    deactivate S3Event1
+
+    activate Unzip
+    Unzip->>Landing: GetObject (download .zip)
+    Landing-->>Unzip: ZIP file contents
+    Unzip->>Unzip: Extract CSV files
+    loop For each CSV file
+        Unzip->>Raw: PutObject (upload CSV)
     end
+    Unzip->>CW: Log processing results
+    deactivate Unzip
 
-    notification2(Raw bucket notification)
+    activate Raw
+    Raw->>S3Event2: ObjectCreated event
+    deactivate Raw
 
-    subgraph ParquetLambda
-        parseCSV(Parse CSV files)
-        convertParquet(Convert to Parquet format)
-        partitionData(Partition by year/month/day from filename)
-        uploadProcessed(Upload to processed bucket)
-    end
+    activate S3Event2
+    S3Event2->>Parquet: Trigger Lambda
+    deactivate S3Event2
 
-    sns[\Send failure notification to topic/]
-    endNode((Processing complete))
+    activate Parquet
+    Parquet->>Raw: GetObject (download CSV)
+    Raw-->>Parquet: CSV file contents
+    Parquet->>Parquet: Parse CSV data
+    Parquet->>Parquet: Convert to Parquet format
+    Parquet->>Parquet: Extract date from filename
+    Parquet->>Processed: PutObject to year=YYYY/month=MM/day=DD/
+    Parquet->>CW: Log conversion results
+    deactivate Parquet
 
-    start -- triggers --> notification1
-    notification1 -- triggers --> UnzipLambda
-
-    unzipStart --> uploadRaw
-    uploadRaw --> notification2
-    notification2 -- triggers --> ParquetLambda
-
-    parseCSV --> convertParquet
-    convertParquet --> partitionData
-    partitionData --> uploadProcessed
-    uploadProcessed -- If all succeed --> endNode
-    uploadProcessed -- If fail --> sns
-    sns --> endNode
+    Note over User,CW: Pipeline complete: ZIP → CSV → Parquet with date partitioning
 ```
 
 ### Deploying the Example

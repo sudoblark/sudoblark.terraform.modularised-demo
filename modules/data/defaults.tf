@@ -8,6 +8,10 @@ locals {
   # Default application identifier
   application = "tf-micro-repo"
 
+  # Abbreviated identifiers for IAM role names (to stay within 64 char limit)
+  account_abbr     = "sudoblark-dev"
+  application_abbr = "tf-micro"
+
   # Default Lambda configurations
   lambda_defaults = {
     runtime               = "python3.11"
