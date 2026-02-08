@@ -44,7 +44,7 @@ locals {
     {
       name          = "unzip-processor"
       description   = "Extracts ZIP files from landing bucket to raw bucket"
-      zip_file_path = "./lambda-packages/unzip-processor.zip"
+      zip_file_path = "../../lambda-packages/unzip-processor.zip"
       handler       = "lambda_function.handler"
       runtime       = "python3.11"
       timeout       = 60
@@ -55,19 +55,20 @@ locals {
         LOG_LEVEL  = "INFO"
       }
     },
-    {
-      name          = "parquet-converter"
-      description   = "Converts CSV files from raw to parquet in processed bucket"
-      zip_file_path = "./lambda-packages/parquet-converter.zip"
-      handler       = "convert.handler"
-      runtime       = "python3.11"
-      timeout       = 120
-      memory_size   = 1024
-      role_name     = "parquet-converter-role"
-      environment_variables = {
-        PROCESSED_BUCKET = "processed"
-        LOG_LEVEL        = "INFO"
-      }
-    }
+    # TODO: Implement parquet-converter Lambda function
+    # {
+    #   name          = "parquet-converter"
+    #   description   = "Converts CSV files from raw to parquet in processed bucket"
+    #   zip_file_path = "../../lambda-packages/parquet-converter.zip"
+    #   handler       = "lambda_function.handler"
+    #   runtime       = "python3.11"
+    #   timeout       = 120
+    #   memory_size   = 1024
+    #   role_name     = "parquet-converter-role"
+    #   environment_variables = {
+    #     PROCESSED_BUCKET = "processed"
+    #     LOG_LEVEL        = "INFO"
+    #   }
+    # }
   ]
 }

@@ -19,6 +19,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Create Lambda deployment packages
+        run: |
+          # Create unzip-processor deployment package
+          cd lambda-packages/unzip-processor
+          pip install -r requirements.txt -t .
+          zip -r ../unzip-processor.zip .
+          cd ../..
+
       - name: terraform apply
         uses: dflook/terraform-apply@v1
         with:

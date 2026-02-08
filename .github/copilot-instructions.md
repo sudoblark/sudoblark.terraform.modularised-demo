@@ -41,6 +41,23 @@ This repository uses specialized instruction files organized by purpose for bett
 
 **Use when:** Creating or updating repository documentation
 
+### For Python Code
+
+**File:** [instructions/python.md](instructions/python.md)
+
+**Applies to:** All `.py` files, especially Lambda functions
+
+**Contains:**
+- Type hints and explicit return types
+- Docstring standards (Google style)
+- Pydantic for data validation
+- Exception handling patterns
+- Security and logging best practices
+- Lambda-specific patterns
+- Testing guidelines for pytest
+
+**Use when:** Writing or modifying Python code for Lambda functions or utilities
+
 ---
 
 ## Key Principle

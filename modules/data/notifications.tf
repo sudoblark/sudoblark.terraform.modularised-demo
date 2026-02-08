@@ -47,16 +47,17 @@ locals {
         }
       ]
     },
-    {
-      bucket_name = "raw"
-      lambda_notifications = [
-        {
-          lambda_name   = "parquet-converter"
-          events        = ["s3:ObjectCreated:*"]
-          filter_prefix = ""
-          filter_suffix = ".csv"
-        }
-      ]
-    }
+    # TODO: Enable parquet-converter notification once Lambda is implemented
+    # {
+    #   bucket_name = "raw"
+    #   lambda_notifications = [
+    #     {
+    #       lambda_name   = "parquet-converter"
+    #       events        = ["s3:ObjectCreated:*"]
+    #       filter_prefix = ""
+    #       filter_suffix = ".csv"
+    #     }
+    #   ]
+    # }
   ]
 }

@@ -38,6 +38,19 @@ jobs:
         with:
           ref: refs/pull/${{ github.event.pull_request.number }}/merge
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Create Lambda deployment packages
+        run: |
+          # Create unzip-processor deployment package
+          cd lambda-packages/unzip-processor
+          pip install -r requirements.txt -t .
+          zip -r ../unzip-processor.zip .
+          cd ../..
+
       - name: terraform validate
         uses: dflook/terraform-validate@v2
         id: validate
@@ -70,6 +83,19 @@ jobs:
         with:
           ref: refs/pull/${{ github.event.pull_request.number }}/merge
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Create Lambda deployment packages
+        run: |
+          # Create unzip-processor deployment package
+          cd lambda-packages/unzip-processor
+          pip install -r requirements.txt -t .
+          zip -r ../unzip-processor.zip .
+          cd ../..
+
       - name: Read Terraform version
         id: terraform-version
         working-directory: ./infrastructure/aws-sudoblark-development
@@ -96,6 +122,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: refs/pull/${{ github.event.pull_request.number }}/merge
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Create Lambda deployment packages
+        run: |
+          # Create unzip-processor deployment package
+          cd lambda-packages/unzip-processor
+          pip install -r requirements.txt -t .
+          zip -r ../unzip-processor.zip .
+          cd ../..
 
       - name: terraform plan
         uses: dflook/terraform-plan@v2
