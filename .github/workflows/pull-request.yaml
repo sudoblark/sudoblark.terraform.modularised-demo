@@ -93,6 +93,10 @@ jobs:
         with:
           terraform_version: ${{ steps.terraform-version.outputs.version }}
 
+      - name: Terraform Init - Data Module
+        run: terraform init
+        working-directory: ./modules/data
+
       - name: Terraform Test - Data Module
         run: terraform test
         working-directory: ./modules/data
