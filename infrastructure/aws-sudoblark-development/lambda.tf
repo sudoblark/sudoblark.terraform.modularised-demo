@@ -18,4 +18,7 @@ module "lambdas" {
   layers                = each.value.layers
   environment_variables = each.value.environment_variables
   tags                  = each.value.tags
+
+  # Ensure IAM roles are created before Lambda functions
+  depends_on = [module.iam]
 }

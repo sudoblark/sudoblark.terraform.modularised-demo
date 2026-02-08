@@ -34,3 +34,15 @@ output "s3_notifications" {
     }
   }
 }
+
+# Output all created IAM roles
+output "iam_roles" {
+  description = "All created IAM roles with their properties"
+  value = {
+    for name, role in module.iam : name => {
+      role_name = role.role_map[name].name
+      role_arn  = role.role_map[name].arn
+      role_id   = role.role_map[name].id
+    }
+  }
+}

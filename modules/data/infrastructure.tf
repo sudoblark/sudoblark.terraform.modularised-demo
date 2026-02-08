@@ -80,6 +80,58 @@ locals {
   notifications_map = {
     for notification in local.notifications_enriched : notification.bucket_name => notification
   }
+
+  # Enrich IAM roles with computed values and trust policies
+  iam_roles_enriched = [
+    for role in local.iam_roles : merge(
+      {
+        account             = local.account
+        project             = local.project
+        application         = local.application
+        tags                = local.default_tags
+        managed_policy_arns = []
+      },
+      role,
+      {
+        # Computed full role name
+        full_name = lower("${local.account}-${local.project}-${local.application}-${role.name}")
+        # Computed assume role policy document
+        assume_role_policy = jsonencode({
+          Version = "2012-10-17"
+          Statement = [
+            {
+              Effect = "Allow"
+              Principal = {
+                Service = role.assume_role_services
+              }
+              Action = "sts:AssumeRole"
+            }
+          ]
+        })
+        # Transform inline policies to policy documents
+        inline_policies = [
+          for policy in role.inline_policies : {
+            name = policy.name
+            policy = jsonencode({
+              Version = "2012-10-17"
+              Statement = [
+                for statement in policy.policy_statements : {
+                  Effect   = statement.effect
+                  Action   = statement.actions
+                  Resource = statement.resources
+                }
+              ]
+            })
+          }
+        ]
+      }
+    )
+  ]
+
+  # Create a map of IAM roles keyed by name for easy lookup
+  iam_roles_map = {
+    for role in local.iam_roles_enriched : role.name => role
+  }
 }
 
 # Data sources for computed values

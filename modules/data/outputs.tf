@@ -64,3 +64,13 @@ output "notifications_map" {
   description = "Map of notifications keyed by bucket name"
   value       = local.notifications_map
 }
+
+output "iam_roles" {
+  description = "All IAM roles with enriched metadata and computed values"
+  value       = local.iam_roles_enriched
+}
+
+output "iam_roles_map" {
+  description = "Map of IAM roles keyed by role name"
+  value       = local.iam_roles_map
+}
