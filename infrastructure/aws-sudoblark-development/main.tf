@@ -54,6 +54,7 @@ provider "aws" {
     tags = merge({
       environment = "development"
       managed_by  = "sudoblark.terraform.modularised-demo"
-    }, module.application_registry.application_tag)
+      }, aws_servicecatalogappregistry_application.demo.tags
+    )
   }
 }
