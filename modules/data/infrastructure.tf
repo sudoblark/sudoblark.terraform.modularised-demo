@@ -33,7 +33,6 @@ locals {
         memory_size           = local.lambda_defaults.memory_size
         layers                = local.lambda_defaults.layers
         environment_variables = local.lambda_defaults.environment_variables
-        tags                  = local.default_tags
       },
       lambda,
       {
@@ -88,7 +87,6 @@ locals {
         account             = local.account
         project             = local.project
         application         = local.application
-        tags                = local.default_tags
         managed_policy_arns = []
       },
       role,

@@ -29,10 +29,7 @@ output "notification_defaults" {
   value       = local.notification_defaults
 }
 
-output "default_tags" {
-  description = "Default tags applied to all resources"
-  value       = local.default_tags
-}
+
 
 # Enriched infrastructure outputs
 output "buckets" {

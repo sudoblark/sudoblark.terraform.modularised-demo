@@ -225,32 +225,6 @@ run "validate_notification_cross_references" {
   }
 }
 
-run "validate_default_tags_applied" {
-  command = plan
-
-  # Test that default tags are applied to lambdas
-  assert {
-    condition     = output.lambdas_map["unzip-processor"].tags["ManagedBy"] == "Terraform"
-    error_message = "Default ManagedBy tag not applied to unzip-processor Lambda"
-  }
-
-  assert {
-    condition     = output.lambdas_map["parquet-converter"].tags["Environment"] == "development"
-    error_message = "Default Environment tag not applied to parquet-converter Lambda"
-  }
-
-  # Test that default tags are applied to IAM roles
-  assert {
-    condition     = output.iam_roles_map["unzip-processor-role"].tags["Environment"] == "development"
-    error_message = "Default Environment tag not applied to IAM role"
-  }
-
-  assert {
-    condition     = output.iam_roles_map["parquet-converter-role"].tags["Project"] == "demos"
-    error_message = "Default Project tag not applied to IAM role"
-  }
-}
-
 run "validate_lambda_layers_configuration" {
   command = plan
 

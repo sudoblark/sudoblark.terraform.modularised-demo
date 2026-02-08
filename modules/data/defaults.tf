@@ -30,11 +30,4 @@ locals {
   notification_defaults = {
     events = ["s3:ObjectCreated:*"]
   }
-
-  # Default tags applied to all resources
-  default_tags = {
-    ManagedBy   = "Terraform"
-    Environment = "development"
-    Project     = local.project
-  }
 }
