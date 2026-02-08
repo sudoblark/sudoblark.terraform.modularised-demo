@@ -96,6 +96,12 @@ jobs:
           zip -r ../unzip-processor.zip .
           cd ../..
 
+          # Create parquet-converter deployment package
+          cd lambda-packages/parquet-converter
+          pip install -r requirements.txt -t .
+          zip -r ../parquet-converter.zip .
+          cd ../..
+
       - name: Read Terraform version
         id: terraform-version
         working-directory: ./infrastructure/aws-sudoblark-development
@@ -134,6 +140,12 @@ jobs:
           cd lambda-packages/unzip-processor
           pip install -r requirements.txt -t .
           zip -r ../unzip-processor.zip .
+          cd ../..
+
+          # Create parquet-converter deployment package
+          cd lambda-packages/parquet-converter
+          pip install -r requirements.txt -t .
+          zip -r ../parquet-converter.zip .
           cd ../..
 
       - name: terraform plan

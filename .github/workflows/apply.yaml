@@ -32,6 +32,12 @@ jobs:
           zip -r ../unzip-processor.zip .
           cd ../..
 
+          # Create parquet-converter deployment package
+          cd lambda-packages/parquet-converter
+          pip install -r requirements.txt -t .
+          zip -r ../parquet-converter.zip .
+          cd ../..
+
       - name: terraform apply
         uses: dflook/terraform-apply@v1
         with:
