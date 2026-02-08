@@ -1,6 +1,0 @@
-{
-  "ERROR_SNS_TOPIC": "${sns_topic_arn}",
-  "TARGET_PREFIX": "${target_prefix}",
-  "TARGET_BUCKET_NAME": "${target_bucket}",
-  "LOG_LEVEL": "${log_level}"
-}
