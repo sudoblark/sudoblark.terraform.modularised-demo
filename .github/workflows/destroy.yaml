@@ -13,11 +13,30 @@ permissions:
 
 jobs:
   apply:
-    name: Terraform Apply
+    name: Terraform Destroy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Create Lambda deployment packages
+        run: |
+          # Create unzip-processor deployment package
+          cd lambda-packages/unzip-processor
+          pip install -r requirements.txt -t .
+          zip -r ../unzip-processor.zip .
+          cd ../..
+
+          # Create parquet-converter deployment package
+          cd lambda-packages/parquet-converter
+          pip install -r requirements.txt -t .
+          zip -r ../parquet-converter.zip .
+          cd ../..
 
       - name: terraform destroy
         uses: dflook/terraform-destroy@v1
